@@ -3,12 +3,12 @@ import { API_TIMEOUT } from '../utils/constants';
 
 // API Keys from environment variables
 export const EXERCISEDB_API_KEY = process.env.EXPO_PUBLIC_EXERCISEDB_API_KEY || '';
-export const EXERCISEDB_API_HOST = process.env.EXPO_PUBLIC_EXERCISEDB_API_HOST || 'exercisedb.p.rapidapi.com';
+export const EXERCISEDB_API_HOST = process.env.EXPO_PUBLIC_EXERCISEDB_API_HOST || 'exercisedb-api1.p.rapidapi.com';
 export const YOUTUBE_API_KEY = process.env.EXPO_PUBLIC_YOUTUBE_API_KEY || '';
 
 // ExerciseDB API configuration
 export const exerciseDbClient = axios.create({
-  baseURL: `https://${EXERCISEDB_API_HOST}`,
+  baseURL: `https://${EXERCISEDB_API_HOST}/api/v1`,
   timeout: API_TIMEOUT,
   headers: {
     'X-RapidAPI-Key': EXERCISEDB_API_KEY,
