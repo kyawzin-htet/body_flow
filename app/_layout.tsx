@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import '../global.css';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -6,6 +7,7 @@ import { initDatabase } from '../src/database/db';
 import { useUserStore } from '../src/store/userStore';
 import { useSettingsStore } from '../src/store/settingsStore';
 import { useTheme } from '../src/hooks/useTheme';
+import { useColorScheme } from 'nativewind';
 
 export default function RootLayout() {
   const colorScheme = useTheme();
@@ -14,7 +16,14 @@ export default function RootLayout() {
   const user = useUserStore((state) => state.user);
   const loadUser = useUserStore((state) => state.loadUser);
   const loadSettings = useSettingsStore((state) => state.loadSettings);
+  const theme = useSettingsStore((state) => state.theme);
+  const { setColorScheme } = useColorScheme();
   const [isReady, setIsReady] = useState(false);
+
+  // Sync theme with NativeWind
+  useEffect(() => {
+    setColorScheme(theme === 'auto' ? 'system' : theme);
+  }, [theme]);
 
   useEffect(() => {
     // Initialize database and load user data

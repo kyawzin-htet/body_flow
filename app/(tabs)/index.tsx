@@ -1,5 +1,5 @@
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { useEffect, useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, AppState, AppStateStatus } from 'react-native';
+import { useEffect, useState, useRef } from 'react';
 import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useUserStore } from '../../src/store/userStore';
@@ -18,6 +18,35 @@ export default function HomeScreen() {
   const [quote, setQuote] = useState('');
   const [coachTip, setCoachTip] = useState('');
   const [recommendations, setRecommendations] = useState<CoachRecommendation[]>([]);
+  const [showWelcome, setShowWelcome] = useState(true);
+  const appState = useRef(AppState.currentState);
+
+  useEffect(() => {
+    // Timer to hide welcome message
+    const timer = setTimeout(() => {
+      setShowWelcome(false);
+    }, 30000);
+
+    // AppState listener to reset timer on return
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
+        setShowWelcome(true);
+        setTimeout(() => {
+          setShowWelcome(false);
+        }, 30000);
+      }
+
+      appState.current = nextAppState;
+    });
+
+    return () => {
+      clearTimeout(timer);
+      subscription.remove();
+    };
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -55,14 +84,16 @@ export default function HomeScreen() {
     <ScrollView style={{ flex: 1, backgroundColor: bgColor }}>
       <View style={{ padding: 20 }}>
         {/* Welcome Section */}
-        <View style={{ marginBottom: 24 }}>
-          <Text style={{ fontSize: 32, fontWeight: 'bold', color: textColor }}>
-            Welcome back{user ? `, ${user.name}` : ''}! 👋
-          </Text>
-          <Text style={{ fontSize: 16, color: mutedColor, marginTop: 8 }}>
-            {quote}
-          </Text>
-        </View>
+        {showWelcome && (
+          <View style={{ marginBottom: 24 }}>
+            <Text style={{ fontSize: 32, fontWeight: 'bold', color: textColor }}>
+              Welcome back{user ? `, ${user.name}` : ''}! 👋
+            </Text>
+            <Text style={{ fontSize: 16, color: mutedColor, marginTop: 4 }}>
+              {quote}
+            </Text>
+          </View>
+        )}
 
         {/* Quick Stats */}
         <View style={{ 
