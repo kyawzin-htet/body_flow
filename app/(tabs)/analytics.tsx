@@ -84,9 +84,9 @@ export default function AnalyticsScreen() {
   return (
     <ScrollView style={{ flex: 1, backgroundColor: bgColor }}>
       <View style={{ padding: 20 }}>
-        <Text style={{ fontSize: 24, fontWeight: 'bold', color: textColor, marginBottom: 8 }}>
+        {/* <Text style={{ fontSize: 24, fontWeight: 'bold', color: textColor, marginBottom: 8 }}>
           Analytics
-        </Text>
+        </Text> */}
         <Text style={{ fontSize: 16, color: mutedColor, marginBottom: 24 }}>
           Track your progress and insights
         </Text>

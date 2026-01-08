@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, TouchableOpacity, useColorScheme } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../src/hooks/useTheme';
 import { GYMNASTICS_SKILLS } from '../../src/utils/constants';
@@ -27,11 +28,10 @@ export default function SkillsScreen() {
   };
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: bgColor }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: bgColor }}>
+    <ScrollView style={{ flex: 1 }}>
       <View style={{ padding: 20 }}>
-        <Text style={{ fontSize: 24, fontWeight: 'bold', color: textColor, marginBottom: 8 }}>
-          Skill Progressions
-        </Text>
+        
         <Text style={{ fontSize: 16, color: mutedColor, marginBottom: 24 }}>
           Master advanced gymnastics movements step by step
         </Text>
@@ -215,5 +215,6 @@ export default function SkillsScreen() {
         </View>
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 }

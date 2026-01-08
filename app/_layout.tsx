@@ -72,6 +72,9 @@ export default function RootLayout() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          animation: 'slide_from_right',
+          animationDuration: 250,
+          gestureEnabled: true,
         }}
       >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -80,7 +83,7 @@ export default function RootLayout() {
           name="exercise/[id]" 
           options={{ 
             title: 'Exercise Details',
-            presentation: 'modal'
+            presentation: 'card'
           }} 
         />
       </Stack>

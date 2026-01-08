@@ -1,4 +1,11 @@
-import { View, Text, ScrollView, TouchableOpacity, useColorScheme, TextInput, Modal } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, useColorScheme, TextInput, Modal, LayoutAnimation, Platform, UIManager } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+if (Platform.OS === 'android') {
+  if (UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+}
 import { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useUserStore } from '../../src/store/userStore';
@@ -33,6 +40,7 @@ export default function HabitsScreen() {
   const today = new Date().toISOString().split('T')[0];
 
   const handleCheckIn = (habitId: number) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     const habit = habits.find(h => h.id === habitId);
     if (!habit) return;
 
@@ -68,12 +76,13 @@ export default function HabitsScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: bgColor }}>
-      <ScrollView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: bgColor }}>
+    <ScrollView style={{ flex: 1 }}>
         <View style={{ padding: 20 }}>
           {/* Header */}
-          <Text style={{ fontSize: 24, fontWeight: 'bold', color: textColor, marginBottom: 8 }}>
+          {/* <Text style={{ fontSize: 24, fontWeight: 'bold', color: textColor, marginBottom: 8 }}>
             Daily Habits
-          </Text>
+          </Text> */}
           <Text style={{ fontSize: 16, color: mutedColor, marginBottom: 24 }}>
             Track your training consistency
           </Text>
@@ -258,10 +267,11 @@ export default function HabitsScreen() {
           )}
         </View>
       </ScrollView>
+    </SafeAreaView>
 
-      {/* Log Modal */}
-      <Modal
-        visible={showLogModal}
+    {/* Log Modal */}
+    <Modal
+      visible={showLogModal}
         transparent
         animationType="slide"
         onRequestClose={() => setShowLogModal(false)}

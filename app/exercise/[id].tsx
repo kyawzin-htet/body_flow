@@ -6,6 +6,8 @@ import { ExerciseService } from '../../src/services/exerciseService';
 import { Exercise } from '../../src/types';
 import { useUserStore } from '../../src/store/userStore';
 import { useHabitStore } from '../../src/store/habitStore';
+import YoutubePlayer from "react-native-youtube-iframe";
+import { YouTubeService } from '../../src/services/youtubeService';
 import { useTheme } from '../../src/hooks/useTheme';
 
 export default function ExerciseDetailScreen() {
@@ -18,6 +20,7 @@ export default function ExerciseDetailScreen() {
   const loadHabits = useHabitStore((state) => state.loadHabits);
 
   const [exercise, setExercise] = useState<Exercise | null>(null);
+  const [videoId, setVideoId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -29,6 +32,18 @@ export default function ExerciseDetailScreen() {
   useEffect(() => {
     loadExercise();
   }, [id]);
+
+  useEffect(() => {
+    if (exercise) {
+      loadRelatedVideo();
+    }
+  }, [exercise]);
+
+  const loadRelatedVideo = async () => {
+    if (!exercise) return;
+    const id = await YouTubeService.searchRelatedVideo(exercise.name);
+    setVideoId(id);
+  };
 
   const loadExercise = async () => {
     if (!id) return;
@@ -115,14 +130,12 @@ export default function ExerciseDetailScreen() {
         {/* Exercise GIF */}
         <View style={{
           backgroundColor: surfaceColor,
-          padding: 20,
           alignItems: 'center',
         }}>
           <View style={{
             width: '100%',
             aspectRatio: 1,
             maxWidth: 400,
-            borderRadius: 20,
             backgroundColor: '#6366f1' + '20',
             overflow: 'hidden',
           }}>
@@ -140,7 +153,7 @@ export default function ExerciseDetailScreen() {
           </View>
         </View>
 
-        <View style={{ padding: 20 }}>
+        <View style={{ padding: 20, paddingTop: 24 }}>
           {/* Exercise Name */}
           <Text style={{ fontSize: 28, fontWeight: 'bold', color: textColor, marginBottom: 8 }}>
             {exercise.name}
@@ -273,6 +286,25 @@ export default function ExerciseDetailScreen() {
               </View>
             </View>
           </View>
+
+          {/* Related Video */}
+          {videoId && (
+            <View style={{ marginBottom: 24 }}>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>
+                Related Video
+              </Text>
+              <View style={{ borderRadius: 16, overflow: 'hidden', backgroundColor: surfaceColor, opacity: 0.99 }}>
+                <YoutubePlayer
+                  height={220}
+                  play={false}
+                  videoId={videoId}
+                  webViewProps={{
+                    androidLayerType: 'hardware',
+                  }}
+                />
+              </View>
+            </View>
+          )}
         </View>
       </ScrollView>
 

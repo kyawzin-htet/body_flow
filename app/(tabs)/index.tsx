@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity, AppState, AppStateStatus } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, AppState, AppStateStatus, LayoutAnimation, Platform, UIManager } from 'react-native';
 import { useEffect, useState, useRef } from 'react';
 import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -9,12 +9,19 @@ import { useTheme } from '../../src/hooks/useTheme';
 import { MOTIVATIONAL_QUOTES } from '../../src/utils/constants';
 import { CoachRecommendation } from '../../src/types';
 
+if (Platform.OS === 'android') {
+  if (UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+}
+
 export default function HomeScreen() {
   const colorScheme = useTheme();
   const isDark = colorScheme === 'dark';
   const user = useUserStore((state) => state.user);
   const habits = useHabitStore((state) => state.habits);
   const loadHabits = useHabitStore((state) => state.loadHabits);
+  const logHabit = useHabitStore((state) => state.logHabit);
   const [quote, setQuote] = useState('');
   const [coachTip, setCoachTip] = useState('');
   const [recommendations, setRecommendations] = useState<CoachRecommendation[]>([]);
@@ -228,34 +235,47 @@ export default function HomeScreen() {
               </Link>
             </View>
           ) : (
-            todayHabits.slice(0, 3).map((habit) => (
-              <View
-                key={habit.id}
-                style={{
-                  backgroundColor: surfaceColor,
-                  padding: 16,
-                  borderRadius: 16,
-                  marginBottom: 12,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <View style={{ flex: 1 }}>
-                  <Text style={{ fontSize: 16, fontWeight: '600', color: textColor }}>
-                    {habit.name}
-                  </Text>
-                  <Text style={{ fontSize: 14, color: mutedColor, marginTop: 4 }}>
-                    {habit.targetSets} sets × {habit.targetReps || habit.targetTime + 's'}
-                  </Text>
-                </View>
-                <Ionicons
-                  name={habit.todayLog?.completed ? 'checkmark-circle' : 'ellipse-outline'}
-                  size={28}
-                  color={habit.todayLog?.completed ? '#10b981' : mutedColor}
-                />
-              </View>
-            ))
+            todayHabits.map((habit) => {
+              const isCompleted = habit.todayLog?.completed;
+              
+              return (
+                <TouchableOpacity
+                  key={habit.id}
+                  onPress={() => {
+                    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                    const today = new Date().toISOString().split('T')[0];
+                    logHabit(habit.id, {
+                      date: today,
+                      completed: !isCompleted,
+                      setsCompleted: !isCompleted ? habit.targetSets : 0,
+                    });
+                  }}
+                  style={{
+                    backgroundColor: surfaceColor,
+                    padding: 16,
+                    borderRadius: 16,
+                    marginBottom: 12,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <View style={{ flex: 1 }}>
+                    <Text style={{ fontSize: 16, fontWeight: '600', color: textColor }}>
+                      {habit.name}
+                    </Text>
+                    <Text style={{ fontSize: 14, color: mutedColor, marginTop: 4 }}>
+                      {habit.targetSets} sets × {habit.targetReps || habit.targetTime + 's'}
+                    </Text>
+                  </View>
+                  <Ionicons
+                    name={isCompleted ? 'checkmark-circle' : 'ellipse-outline'}
+                    size={28}
+                    color={isCompleted ? '#10b981' : mutedColor}
+                  />
+                </TouchableOpacity>
+              );
+            })
           )}
         </View>
 

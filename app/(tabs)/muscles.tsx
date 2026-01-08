@@ -1,4 +1,5 @@
-import { View, Text, ScrollView, TouchableOpacity, useColorScheme, ActivityIndicator, Image } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, useColorScheme, ActivityIndicator, Image, LayoutAnimation, Platform, UIManager } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -21,13 +22,19 @@ export default function MusclesScreen() {
   const textColor = isDark ? '#ffffff' : '#000000';
   const mutedColor = isDark ? '#9ca3af' : '#6b7280';
 
+  if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+
   const handleMuscleSelect = async (muscleName: string) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setSelectedMuscle(muscleName);
     setIsLoading(true);
     setError(null);
 
     try {
       const fetchedExercises = await ExerciseService.getExercisesByBodyPart(muscleName.toLowerCase());
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       setExercises(fetchedExercises);
     } catch (err) {
       setError('Failed to load exercises. Check your internet connection.');
@@ -38,11 +45,12 @@ export default function MusclesScreen() {
   };
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: bgColor }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: bgColor }}>
+    <ScrollView style={{ flex: 1 }}>
       <View style={{ padding: 20 }}>
-        <Text style={{ fontSize: 24, fontWeight: 'bold', color: textColor, marginBottom: 8 }}>
+        {/* <Text style={{ fontSize: 24, fontWeight: 'bold', color: textColor, marginBottom: 8 }}>
           Muscle Groups
-        </Text>
+        </Text> */}
         <Text style={{ fontSize: 16, color: mutedColor, marginBottom: 24 }}>
           Select a muscle group to find exercises
         </Text>
@@ -216,5 +224,6 @@ export default function MusclesScreen() {
         )}
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 }
