@@ -137,6 +137,50 @@ export interface WorkoutExercise {
   weight?: number;
 }
 
+// Workout Types
+export interface Workout {
+  id: number;
+  userId: number;
+  date: string;
+  duration: number; // minutes
+  exercises: WorkoutExercise[];
+  notes?: string;
+  createdAt: string;
+}
+
+export interface WorkoutExercise {
+  exerciseId: string;
+  sets: number;
+  reps?: number;
+  time?: number;
+  weight?: number;
+}
+
+// Hydration Types
+export interface HydrationLog {
+  id: number;
+  userId: number;
+  date: string;
+  amountMl: number;
+  goalMl: number;
+  createdAt: string;
+}
+
+// Body Measurement Types
+export interface BodyMeasurement {
+  id: number;
+  userId: number;
+  date: string;
+  weight?: number;
+  bodyFat?: number;
+  chest?: number;
+  waist?: number;
+  arms?: number;
+  legs?: number;
+  notes?: string;
+  createdAt: string;
+}
+
 // Analytics Types
 export interface MuscleBalanceData {
   muscleGroup: MuscleGroup;

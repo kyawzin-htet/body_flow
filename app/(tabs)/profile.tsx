@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, TouchableOpacity, Switch, Modal, TextInput, Alert, Share } from 'react-native';
 import { useState, useEffect } from 'react';
+import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useUserStore } from '../../src/store/userStore';
 import { useSettingsStore } from '../../src/store/settingsStore';
@@ -252,6 +253,41 @@ export default function ProfileScreen() {
               <Text style={{ fontSize: 12, color: mutedColor }}>Training Time</Text>
             </View>
           </View>
+
+          {/* Body Measurements Button */}
+          <Link href="/measurements" asChild>
+            <TouchableOpacity
+              style={{
+                backgroundColor: surfaceColor,
+                padding: 16,
+                borderRadius: 16,
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginBottom: 24,
+                gap: 12,
+              }}
+            >
+              <View style={{ 
+                width: 48, 
+                height: 48, 
+                borderRadius: 12, 
+                backgroundColor: '#ec4899', 
+                justifyContent: 'center', 
+                alignItems: 'center' 
+              }}>
+                <Ionicons name="body" size={24} color="#ffffff" />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={{ fontSize: 16, fontWeight: '600', color: textColor }}>
+                  Body Measurements
+                </Text>
+                <Text style={{ fontSize: 14, color: mutedColor }}>
+                  Track weight and body composition
+                </Text>
+              </View>
+              <Ionicons name="chevron-forward" size={20} color={mutedColor} />
+            </TouchableOpacity>
+          </Link>
 
           {/* Settings Section */}
           <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>

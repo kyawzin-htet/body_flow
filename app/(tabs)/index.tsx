@@ -4,6 +4,7 @@ import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useUserStore } from '../../src/store/userStore';
 import { useHabitStore } from '../../src/store/habitStore';
+import { useHydrationStore } from '../../src/store/hydrationStore';
 import { CoachService } from '../../src/services/coachService';
 import { useTheme } from '../../src/hooks/useTheme';
 import { MOTIVATIONAL_QUOTES } from '../../src/utils/constants';
@@ -65,7 +66,7 @@ export default function HomeScreen() {
     setQuote(MOTIVATIONAL_QUOTES[Math.floor(Math.random() * MOTIVATIONAL_QUOTES.length)]);
   }, [user, loadHabits]);
 
-  const loadCoachData = async () => {
+const loadCoachData = async () => {
     if (!user) return;
 
     try {
@@ -77,6 +78,17 @@ export default function HomeScreen() {
       console.error('Error loading coach data:', error);
     }
   };
+
+  // Hydration state
+  const hydrationLog = useHydrationStore((state) => state.todayLog);
+  const loadHydration = useHydrationStore((state) => state.loadTodayLog);
+  const logWater = useHydrationStore((state) => state.logWater);
+
+  useEffect(() => {
+    if (user) {
+      loadHydration(user.id);
+    }
+  }, [user, loadHydration]);
 
   const bgColor = isDark ? '#0a0e27' : '#f8f9fa';
   const surfaceColor = isDark ? '#1a1f3a' : '#ffffff';
@@ -142,6 +154,71 @@ export default function HomeScreen() {
               {completedToday}/{totalHabits}
             </Text>
             <Text style={{ fontSize: 12, color: mutedColor }}>Today's Habits</Text>
+          </View>
+        </View>
+
+        {/* Hydration Tracker */}
+        <View style={{ marginBottom: 24 }}>
+          <View style={{ 
+            backgroundColor: '#3b82f6' + '20', // Blue tint
+            padding: 20, 
+            borderRadius: 20,
+            overflow: 'hidden',
+            position: 'relative'
+          }}>
+            {/* Background water effect */}
+            <View style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: `${Math.min(((hydrationLog?.amountMl || 0) / (hydrationLog?.goalMl || 2000)) * 100, 100)}%`,
+              backgroundColor: '#3b82f6' + '40',
+              zIndex: -1,
+            }} />
+
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <View>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                  <Ionicons name="water" size={24} color="#3b82f6" />
+                  <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor }}>
+                    Hydration
+                  </Text>
+                </View>
+                <Text style={{ fontSize: 32, fontWeight: 'bold', color: textColor, marginTop: 8 }}>
+                  {hydrationLog?.amountMl || 0} <Text style={{ fontSize: 16, color: mutedColor }}>/ {hydrationLog?.goalMl || 2000}ml</Text>
+                </Text>
+              </View>
+              
+              <View style={{ gap: 8 }}>
+                <TouchableOpacity
+                  onPress={() => user && logWater(user.id, 250)}
+                  style={{
+                    backgroundColor: '#3b82f6',
+                    paddingHorizontal: 16,
+                    paddingVertical: 8,
+                    borderRadius: 12,
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ color: '#ffffff', fontWeight: 'bold' }}>+250ml</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => user && logWater(user.id, 500)}
+                  style={{
+                    backgroundColor: surfaceColor,
+                    paddingHorizontal: 16,
+                    paddingVertical: 8,
+                    borderRadius: 12,
+                    alignItems: 'center',
+                    borderWidth: 1,
+                    borderColor: '#3b82f6',
+                  }}
+                >
+                  <Text style={{ color: textColor, fontWeight: 'bold' }}>+500ml</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
         </View>
 
@@ -286,6 +363,39 @@ export default function HomeScreen() {
           </Text>
           
           <View style={{ gap: 12 }}>
+            <Link href="/timer" asChild>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: surfaceColor,
+                  padding: 16,
+                  borderRadius: 16,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: 12,
+                }}
+              >
+                <View style={{ 
+                  width: 48, 
+                  height: 48, 
+                  borderRadius: 12, 
+                  backgroundColor: '#ef4444', 
+                  justifyContent: 'center', 
+                  alignItems: 'center' 
+                }}>
+                  <Ionicons name="timer" size={24} color="#ffffff" />
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontSize: 16, fontWeight: '600', color: textColor }}>
+                    Interval Timer
+                  </Text>
+                  <Text style={{ fontSize: 14, color: mutedColor }}>
+                    Tabata & HIIT workouts
+                  </Text>
+                </View>
+                <Ionicons name="chevron-forward" size={20} color={mutedColor} />
+              </TouchableOpacity>
+            </Link>
+
             <Link href="/muscles" asChild>
               <TouchableOpacity
                 style={{

@@ -163,6 +163,37 @@ const createTables = async () => {
     );
   `);
 
+  // Hydration logs table
+  await db.execAsync(`
+    CREATE TABLE IF NOT EXISTS hydration_logs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER,
+      date DATE NOT NULL,
+      amount_ml INTEGER,
+      goal_ml INTEGER,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id)
+    );
+  `);
+
+  // Body measurements table
+  await db.execAsync(`
+    CREATE TABLE IF NOT EXISTS body_measurements (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER,
+      date DATE NOT NULL,
+      weight REAL,
+      body_fat REAL,
+      chest REAL,
+      waist REAL,
+      arms REAL,
+      legs REAL,
+      notes TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id)
+    );
+  `);
+
   // Create indexes for better query performance
   await db.execAsync(`
     CREATE INDEX IF NOT EXISTS idx_habit_logs_habit_id ON habit_logs(habit_id);
@@ -201,6 +232,8 @@ export const resetDatabase = async () => {
     'recovery_logs',
     'achievements',
     'workouts',
+    'hydration_logs',
+    'body_measurements',
   ];
 
   for (const table of tables) {
