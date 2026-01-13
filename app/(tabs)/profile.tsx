@@ -31,8 +31,8 @@ export default function ProfileScreen() {
   const [editSkillLevel, setEditSkillLevel] = useState<SkillLevel>('beginner');
   const [metrics, setMetrics] = useState<ProgressMetrics | null>(null);
 
-  const bgColor = isDark ? '#0a0e27' : '#f8f9fa';
-  const surfaceColor = isDark ? '#1a1f3a' : '#ffffff';
+  const bgColor = isDark ? '#000000' : '#f8f9fa';
+  const surfaceColor = isDark ? '#1a1a1a' : '#ffffff';
   const textColor = isDark ? '#ffffff' : '#000000';
   const mutedColor = isDark ? '#9ca3af' : '#6b7280';
 
@@ -149,8 +149,10 @@ export default function ProfileScreen() {
         <View style={{ padding: 20 }}>
           {/* Profile Header */}
           <View style={{
-            backgroundColor: surfaceColor,
+            backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
             borderRadius: 20,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
             padding: 24,
             marginBottom: 20,
             alignItems: 'center',
@@ -159,17 +161,19 @@ export default function ProfileScreen() {
               width: 80,
               height: 80,
               borderRadius: 40,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
               backgroundColor: '#6366f1',
               justifyContent: 'center',
               alignItems: 'center',
               marginBottom: 16,
             }}>
-              <Text style={{ fontSize: 32, fontWeight: 'bold', color: '#ffffff' }}>
+              <Text style={{ fontSize: 28, fontWeight: 'bold', color: '#ffffff' }}>
                 {user?.name.charAt(0).toUpperCase() || 'U'}
               </Text>
             </View>
 
-            <Text style={{ fontSize: 24, fontWeight: 'bold', color: textColor }}>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor }}>
               {user?.name || 'Guest'}
             </Text>
 
@@ -179,13 +183,15 @@ export default function ProfileScreen() {
               paddingVertical: 8,
               backgroundColor: '#6366f1' + '20',
               borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
             }}>
-              <Text style={{ fontSize: 14, fontWeight: '600', color: '#6366f1' }}>
+              <Text style={{ fontSize: 10, fontWeight: '600', color: '#6366f1' }}>
                 {skillLevelInfo?.label || 'Beginner'}
               </Text>
             </View>
 
-            <Text style={{ fontSize: 14, color: mutedColor, marginTop: 8, textAlign: 'center' }}>
+            <Text style={{ fontSize: 10, color: mutedColor, marginTop: 8, textAlign: 'center' }}>
               {user?.goals.map(g => g.charAt(0).toUpperCase() + g.slice(1)).join(', ') || 'No goals set'}
             </Text>
           </View>
@@ -200,67 +206,76 @@ export default function ProfileScreen() {
             <View style={{
               flex: 1,
               minWidth: '47%',
-              backgroundColor: surfaceColor,
+              backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
               padding: 16,
               borderRadius: 16,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
             }}>
               <Ionicons name="barbell" size={24} color="#6366f1" />
-              <Text style={{ fontSize: 24, fontWeight: 'bold', color: textColor, marginTop: 8 }}>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginTop: 8 }}>
                 {metrics?.totalWorkouts || 0}
               </Text>
-              <Text style={{ fontSize: 12, color: mutedColor }}>Total Workouts</Text>
+              <Text style={{ fontSize: 10, color: mutedColor }}>Total Workouts</Text>
             </View>
 
             <View style={{
               flex: 1,
               minWidth: '47%',
-              backgroundColor: surfaceColor,
+              backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
               padding: 16,
               borderRadius: 16,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
             }}>
               <Ionicons name="flame" size={24} color="#f97316" />
-              <Text style={{ fontSize: 24, fontWeight: 'bold', color: textColor, marginTop: 8 }}>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginTop: 8 }}>
                 {metrics?.bestStreak || 0}
               </Text>
-              <Text style={{ fontSize: 12, color: mutedColor }}>Best Streak</Text>
+              <Text style={{ fontSize: 10, color: mutedColor }}>Best Streak</Text>
             </View>
 
             <View style={{
               flex: 1,
               minWidth: '47%',
-              backgroundColor: surfaceColor,
+              backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
               padding: 16,
               borderRadius: 16,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
             }}>
               <Ionicons name="trending-up" size={24} color="#10b981" />
-              <Text style={{ fontSize: 24, fontWeight: 'bold', color: textColor, marginTop: 8 }}>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginTop: 8 }}>
                 {metrics?.consistencyScore || 0}%
               </Text>
-              <Text style={{ fontSize: 12, color: mutedColor }}>Consistency</Text>
+              <Text style={{ fontSize: 10, color: mutedColor }}>Consistency</Text>
             </View>
 
             <View style={{
               flex: 1,
               minWidth: '47%',
-              backgroundColor: surfaceColor,
+              backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
               padding: 16,
               borderRadius: 16,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
             }}>
               <Ionicons name="time" size={24} color="#8b5cf6" />
-              <Text style={{ fontSize: 24, fontWeight: 'bold', color: textColor, marginTop: 8 }}>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginTop: 8 }}>
                 {Math.floor((metrics?.totalDuration || 0) / 60)}h
               </Text>
-              <Text style={{ fontSize: 12, color: mutedColor }}>Training Time</Text>
+              <Text style={{ fontSize: 10, color: mutedColor }}>Training Time</Text>
             </View>
           </View>
 
-          {/* Body Measurements Button */}
           <Link href="/measurements" asChild>
             <TouchableOpacity
               style={{
-                backgroundColor: surfaceColor,
+                backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
                 padding: 16,
                 borderRadius: 16,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                 flexDirection: 'row',
                 alignItems: 'center',
                 marginBottom: 24,
@@ -270,7 +285,9 @@ export default function ProfileScreen() {
               <View style={{ 
                 width: 48, 
                 height: 48, 
-                borderRadius: 12, 
+                borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)", 
                 backgroundColor: '#ec4899', 
                 justifyContent: 'center', 
                 alignItems: 'center' 
@@ -278,28 +295,102 @@ export default function ProfileScreen() {
                 <Ionicons name="body" size={24} color="#ffffff" />
               </View>
               <View style={{ flex: 1 }}>
-                <Text style={{ fontSize: 16, fontWeight: '600', color: textColor }}>
+                <Text style={{ fontSize: 12, fontWeight: '600', color: textColor }}>
                   Body Measurements
                 </Text>
-                <Text style={{ fontSize: 14, color: mutedColor }}>
+                <Text style={{ fontSize: 10, color: mutedColor }}>
                   Track weight and body composition
                 </Text>
               </View>
               <Ionicons name="chevron-forward" size={20} color={mutedColor} />
             </TouchableOpacity>
-          </Link>
 
+          </Link>
+          <Link href="/habits" asChild>
+            <TouchableOpacity
+              style={{
+                backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
+                padding: 16,
+                borderRadius: 16,
+                borderWidth: 1,
+                borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
+                flexDirection: "row",
+                alignItems: "center",
+                marginBottom: 12,
+                gap: 12,
+              }}
+            >
+              <View style={{ width: 48, height: 48, borderRadius: 12, borderWidth: 1, borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)", backgroundColor: "#10b981", justifyContent: "center", alignItems: "center" }}>
+                <Ionicons name="checkbox" size={24} color="#ffffff" />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={{ fontSize: 12, fontWeight: "600", color: textColor }}>Training Habits</Text>
+                <Text style={{ fontSize: 10, color: mutedColor }}>Track your daily workout routines</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={20} color={mutedColor} />
+            </TouchableOpacity>
+          </Link>
+          <Link href="/analytics" asChild>
+            <TouchableOpacity
+              style={{
+                backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
+                padding: 16,
+                borderRadius: 16,
+                borderWidth: 1,
+                borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
+                flexDirection: "row",
+                alignItems: "center",
+                marginBottom: 24,
+                gap: 12,
+              }}
+            >
+              <View style={{ width: 48, height: 48, borderRadius: 12, borderWidth: 1, borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)", backgroundColor: "#6366f1", justifyContent: "center", alignItems: "center" }}>
+                <Ionicons name="stats-chart" size={24} color="#ffffff" />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={{ fontSize: 12, fontWeight: "600", color: textColor }}>Analytics & Stats</Text>
+                <Text style={{ fontSize: 10, color: mutedColor }}>View your progress and insights</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={20} color={mutedColor} />
+            </TouchableOpacity>
+          </Link>
+          <Link href="/skills" asChild>
+            <TouchableOpacity
+              style={{
+                backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
+                padding: 16,
+                borderRadius: 16,
+                borderWidth: 1,
+                borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
+                flexDirection: "row",
+                alignItems: "center",
+                marginBottom: 24,
+                gap: 12,
+              }}
+            >
+              <View style={{ width: 48, height: 48, borderRadius: 12, borderWidth: 1, borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)", backgroundColor: "#f97316", justifyContent: "center", alignItems: "center" }}>
+                <Ionicons name="trophy" size={24} color="#ffffff" />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={{ fontSize: 12, fontWeight: "600", color: textColor }}>Skill Progressions</Text>
+                <Text style={{ fontSize: 10, color: mutedColor }}>Track advanced calisthenics skills</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={20} color={mutedColor} />
+            </TouchableOpacity>
+          </Link>
           {/* Settings Section */}
-          <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>
+          <Text style={{ fontSize: 16, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>
             Settings
           </Text>
 
           <View style={{ gap: 12, marginBottom: 24 }}>
             {/* Notifications */}
             <View style={{
-              backgroundColor: surfaceColor,
+              backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
               padding: 16,
               borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'space-between',
@@ -307,10 +398,10 @@ export default function ProfileScreen() {
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
                 <Ionicons name="notifications" size={24} color="#6366f1" />
                 <View>
-                  <Text style={{ fontSize: 16, fontWeight: '600', color: textColor }}>
+                  <Text style={{ fontSize: 12, fontWeight: '600', color: textColor }}>
                     Notifications
                   </Text>
-                  <Text style={{ fontSize: 12, color: mutedColor }}>
+                  <Text style={{ fontSize: 10, color: mutedColor }}>
                     Training reminders and alerts
                   </Text>
                 </View>
@@ -325,9 +416,11 @@ export default function ProfileScreen() {
 
             {/* Sound */}
             <View style={{
-              backgroundColor: surfaceColor,
+              backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
               padding: 16,
               borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'space-between',
@@ -335,10 +428,10 @@ export default function ProfileScreen() {
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
                 <Ionicons name="volume-high" size={24} color="#10b981" />
                 <View>
-                  <Text style={{ fontSize: 16, fontWeight: '600', color: textColor }}>
+                  <Text style={{ fontSize: 12, fontWeight: '600', color: textColor }}>
                     Sound Effects
                   </Text>
-                  <Text style={{ fontSize: 12, color: mutedColor }}>
+                  <Text style={{ fontSize: 10, color: mutedColor }}>
                     Enable audio feedback
                   </Text>
                 </View>
@@ -355,9 +448,11 @@ export default function ProfileScreen() {
             <TouchableOpacity
               onPress={() => setShowThemeModal(true)}
               style={{
-                backgroundColor: surfaceColor,
+                backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
                 padding: 16,
                 borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -366,10 +461,10 @@ export default function ProfileScreen() {
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
                 <Ionicons name={isDark ? 'moon' : 'sunny'} size={24} color="#f97316" />
                 <View>
-                  <Text style={{ fontSize: 16, fontWeight: '600', color: textColor }}>
+                  <Text style={{ fontSize: 12, fontWeight: '600', color: textColor }}>
                     Theme
                   </Text>
-                  <Text style={{ fontSize: 12, color: mutedColor }}>
+                  <Text style={{ fontSize: 10, color: mutedColor }}>
                     {theme === 'auto' ? 'Auto (System)' : theme === 'dark' ? 'Dark Mode' : 'Light Mode'}
                   </Text>
                 </View>
@@ -381,9 +476,11 @@ export default function ProfileScreen() {
             <TouchableOpacity
               onPress={handleEditProfile}
               style={{
-                backgroundColor: surfaceColor,
+                backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
                 padding: 16,
                 borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -392,10 +489,10 @@ export default function ProfileScreen() {
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
                 <Ionicons name="person" size={24} color="#8b5cf6" />
                 <View>
-                  <Text style={{ fontSize: 16, fontWeight: '600', color: textColor }}>
+                  <Text style={{ fontSize: 12, fontWeight: '600', color: textColor }}>
                     Edit Profile
                   </Text>
-                  <Text style={{ fontSize: 12, color: mutedColor }}>
+                  <Text style={{ fontSize: 10, color: mutedColor }}>
                     Update goals and preferences
                   </Text>
                 </View>
@@ -405,7 +502,7 @@ export default function ProfileScreen() {
           </View>
 
           {/* Data & Support */}
-          <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>
+          <Text style={{ fontSize: 16, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>
             Data & Support
           </Text>
 
@@ -413,9 +510,11 @@ export default function ProfileScreen() {
             <TouchableOpacity
               onPress={handleExportData}
               style={{
-                backgroundColor: surfaceColor,
+                backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
                 padding: 16,
                 borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -423,7 +522,7 @@ export default function ProfileScreen() {
             >
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
                 <Ionicons name="download" size={24} color="#3b82f6" />
-                <Text style={{ fontSize: 16, fontWeight: '600', color: textColor }}>
+                <Text style={{ fontSize: 12, fontWeight: '600', color: textColor }}>
                   Export Data
                 </Text>
               </View>
@@ -433,9 +532,11 @@ export default function ProfileScreen() {
             <TouchableOpacity
               onPress={handleResetData}
               style={{
-                backgroundColor: surfaceColor,
+                backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
                 padding: 16,
                 borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -443,7 +544,7 @@ export default function ProfileScreen() {
             >
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
                 <Ionicons name="trash" size={24} color="#ef4444" />
-                <Text style={{ fontSize: 16, fontWeight: '600', color: '#ef4444' }}>
+                <Text style={{ fontSize: 12, fontWeight: '600', color: '#ef4444' }}>
                   Reset All Data
                 </Text>
               </View>
@@ -452,9 +553,11 @@ export default function ProfileScreen() {
 
             <TouchableOpacity
               style={{
-                backgroundColor: surfaceColor,
+                backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
                 padding: 16,
                 borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -462,7 +565,7 @@ export default function ProfileScreen() {
             >
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
                 <Ionicons name="information-circle" size={24} color="#f59e0b" />
-                <Text style={{ fontSize: 16, fontWeight: '600', color: textColor }}>
+                <Text style={{ fontSize: 12, fontWeight: '600', color: textColor }}>
                   About BodyFlow
                 </Text>
               </View>
@@ -471,7 +574,7 @@ export default function ProfileScreen() {
           </View>
 
           {/* Version */}
-          <Text style={{ fontSize: 12, color: mutedColor, textAlign: 'center', marginBottom: 20 }}>
+          <Text style={{ fontSize: 10, color: mutedColor, textAlign: 'center', marginBottom: 20 }}>
             Version 1.0.0 • Made with ❤️
           </Text>
         </View>
@@ -490,7 +593,7 @@ export default function ProfileScreen() {
           justifyContent: 'flex-end',
         }}>
           <View style={{
-            backgroundColor: surfaceColor,
+            backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
             borderTopLeftRadius: 24,
             borderTopRightRadius: 24,
             padding: 24,
@@ -498,7 +601,7 @@ export default function ProfileScreen() {
           }}>
             <ScrollView>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-                <Text style={{ fontSize: 22, fontWeight: 'bold', color: textColor }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: textColor }}>
                   Edit Profile
                 </Text>
                 <TouchableOpacity onPress={() => setShowEditModal(false)}>
@@ -508,14 +611,16 @@ export default function ProfileScreen() {
 
               {/* Name */}
               <View style={{ marginBottom: 20 }}>
-                <Text style={{ fontSize: 14, color: mutedColor, marginBottom: 8 }}>Name</Text>
+                <Text style={{ fontSize: 10, color: mutedColor, marginBottom: 8 }}>Name</Text>
                 <TextInput
                   style={{
                     backgroundColor: bgColor,
                     padding: 16,
                     borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                     color: textColor,
-                    fontSize: 16,
+                    fontSize: 12,
                   }}
                   placeholder="Your name"
                   placeholderTextColor={mutedColor}
@@ -526,7 +631,7 @@ export default function ProfileScreen() {
 
               {/* Goals */}
               <View style={{ marginBottom: 20 }}>
-                <Text style={{ fontSize: 14, color: mutedColor, marginBottom: 8 }}>Goals</Text>
+                <Text style={{ fontSize: 10, color: mutedColor, marginBottom: 8 }}>Goals</Text>
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
                   {GOALS.map(goal => (
                     <TouchableOpacity
@@ -536,10 +641,12 @@ export default function ProfileScreen() {
                         paddingHorizontal: 16,
                         paddingVertical: 10,
                         borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                         backgroundColor: editGoals.includes(goal.value) ? '#6366f1' : bgColor,
                       }}
                     >
-                      <Text style={{ color: editGoals.includes(goal.value) ? '#ffffff' : textColor, fontSize: 14 }}>
+                      <Text style={{ color: editGoals.includes(goal.value) ? '#ffffff' : textColor, fontSize: 10 }}>
                         {goal.label}
                       </Text>
                     </TouchableOpacity>
@@ -549,7 +656,7 @@ export default function ProfileScreen() {
 
               {/* Target Muscles */}
               <View style={{ marginBottom: 20 }}>
-                <Text style={{ fontSize: 14, color: mutedColor, marginBottom: 8 }}>Target Muscles</Text>
+                <Text style={{ fontSize: 10, color: mutedColor, marginBottom: 8 }}>Target Muscles</Text>
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
                   {MUSCLE_GROUPS.map(muscle => (
                     <TouchableOpacity
@@ -559,10 +666,12 @@ export default function ProfileScreen() {
                         paddingHorizontal: 16,
                         paddingVertical: 10,
                         borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                         backgroundColor: editMuscles.includes(muscle.name) ? muscle.color : bgColor,
                       }}
                     >
-                      <Text style={{ color: editMuscles.includes(muscle.name) ? '#ffffff' : textColor, fontSize: 14 }}>
+                      <Text style={{ color: editMuscles.includes(muscle.name) ? '#ffffff' : textColor, fontSize: 10 }}>
                         {muscle.label}
                       </Text>
                     </TouchableOpacity>
@@ -572,7 +681,7 @@ export default function ProfileScreen() {
 
               {/* Skill Level */}
               <View style={{ marginBottom: 20 }}>
-                <Text style={{ fontSize: 14, color: mutedColor, marginBottom: 8 }}>Skill Level</Text>
+                <Text style={{ fontSize: 10, color: mutedColor, marginBottom: 8 }}>Skill Level</Text>
                 <View style={{ gap: 8 }}>
                   {SKILL_LEVELS.map(level => (
                     <TouchableOpacity
@@ -581,13 +690,15 @@ export default function ProfileScreen() {
                       style={{
                         padding: 16,
                         borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                         backgroundColor: editSkillLevel === level.value ? '#6366f1' : bgColor,
                       }}
                     >
                       <Text style={{ color: editSkillLevel === level.value ? '#ffffff' : textColor, fontWeight: '600', marginBottom: 4 }}>
                         {level.label}
                       </Text>
-                      <Text style={{ color: editSkillLevel === level.value ? '#ffffff' + 'CC' : mutedColor, fontSize: 12 }}>
+                      <Text style={{ color: editSkillLevel === level.value ? '#ffffff' + 'CC' : mutedColor, fontSize: 10 }}>
                         {level.description}
                       </Text>
                     </TouchableOpacity>
@@ -602,10 +713,12 @@ export default function ProfileScreen() {
                   backgroundColor: '#6366f1',
                   padding: 16,
                   borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                   alignItems: 'center',
                 }}
               >
-                <Text style={{ color: '#ffffff', fontWeight: '600', fontSize: 16 }}>
+                <Text style={{ color: '#ffffff', fontWeight: '600', fontSize: 12 }}>
                   Save Changes
                 </Text>
               </TouchableOpacity>
@@ -627,13 +740,13 @@ export default function ProfileScreen() {
           justifyContent: 'flex-end',
         }}>
           <View style={{
-            backgroundColor: surfaceColor,
+            backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
             borderTopLeftRadius: 24,
             borderTopRightRadius: 24,
             padding: 24,
           }}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-              <Text style={{ fontSize: 22, fontWeight: 'bold', color: textColor }}>
+              <Text style={{ fontSize: 18, fontWeight: 'bold', color: textColor }}>
                 Choose Theme
               </Text>
               <TouchableOpacity onPress={() => setShowThemeModal(false)}>
@@ -653,6 +766,8 @@ export default function ProfileScreen() {
                   style={{
                     padding: 16,
                     borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                     backgroundColor: theme === themeOption.value ? '#6366f1' : bgColor,
                     flexDirection: 'row',
                     alignItems: 'center',

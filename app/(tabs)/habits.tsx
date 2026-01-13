@@ -32,8 +32,8 @@ export default function HabitsScreen() {
     }
   }, [user, loadHabits]);
 
-  const bgColor = isDark ? '#0a0e27' : '#f8f9fa';
-  const surfaceColor = isDark ? '#1a1f3a' : '#ffffff';
+  const bgColor = isDark ? '#000000' : '#f8f9fa';
+  const surfaceColor = isDark ? '#1a1a1a' : '#ffffff';
   const textColor = isDark ? '#ffffff' : '#000000';
   const mutedColor = isDark ? '#9ca3af' : '#6b7280';
 
@@ -76,30 +76,32 @@ export default function HabitsScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: bgColor }}>
-      <SafeAreaView style={{ flex: 1, backgroundColor: bgColor }}>
+      {/* <SafeAreaView style={{ flex: 1, backgroundColor: bgColor }}> */}
     <ScrollView style={{ flex: 1 }}>
         <View style={{ padding: 20 }}>
           {/* Header */}
-          {/* <Text style={{ fontSize: 24, fontWeight: 'bold', color: textColor, marginBottom: 8 }}>
+          {/* <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginBottom: 8 }}>
             Daily Habits
           </Text> */}
-          <Text style={{ fontSize: 16, color: mutedColor, marginBottom: 24 }}>
+          <Text style={{ fontSize: 12, color: mutedColor, marginBottom: 24 }}>
             Track your training consistency
           </Text>
 
           {/* Today's Date */}
           <View style={{ 
-            backgroundColor: surfaceColor,
+            backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
             padding: 16,
             borderRadius: 16,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
             marginBottom: 20,
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
             <View>
-              <Text style={{ fontSize: 14, color: mutedColor }}>Today</Text>
-              <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginTop: 4 }}>
+              <Text style={{ fontSize: 10, color: mutedColor }}>Today</Text>
+              <Text style={{ fontSize: 16, fontWeight: 'bold', color: textColor, marginTop: 4 }}>
                 {new Date().toLocaleDateString('en-US', { 
                   weekday: 'long', 
                   month: 'short', 
@@ -108,8 +110,8 @@ export default function HabitsScreen() {
               </Text>
             </View>
             <View style={{ alignItems: 'flex-end' }}>
-              <Text style={{ fontSize: 14, color: mutedColor }}>Completed</Text>
-              <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#10b981', marginTop: 4 }}>
+              <Text style={{ fontSize: 10, color: mutedColor }}>Completed</Text>
+              <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#10b981', marginTop: 4 }}>
                 {habits.filter(h => h.todayLog?.completed).length}/{habits.length}
               </Text>
             </View>
@@ -118,16 +120,18 @@ export default function HabitsScreen() {
           {/* Habits List */}
           {habits.length === 0 ? (
             <View style={{
-              backgroundColor: surfaceColor,
+              backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
               padding: 40,
               borderRadius: 20,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
               alignItems: 'center',
             }}>
               <Ionicons name="add-circle-outline" size={64} color={mutedColor} />
-              <Text style={{ fontSize: 18, fontWeight: 'bold', color: textColor, marginTop: 16 }}>
+              <Text style={{ fontSize: 14, fontWeight: 'bold', color: textColor, marginTop: 16 }}>
                 No Habits Yet
               </Text>
-              <Text style={{ fontSize: 14, color: mutedColor, marginTop: 8, textAlign: 'center' }}>
+              <Text style={{ fontSize: 10, color: mutedColor, marginTop: 8, textAlign: 'center' }}>
                 Create your first training habit to get started
               </Text>
               <TouchableOpacity
@@ -138,9 +142,11 @@ export default function HabitsScreen() {
                   paddingHorizontal: 24,
                   paddingVertical: 12,
                   borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                 }}
               >
-                <Text style={{ color: '#ffffff', fontWeight: '600', fontSize: 16 }}>
+                <Text style={{ color: '#ffffff', fontWeight: '600', fontSize: 12 }}>
                   Create Habit
                 </Text>
               </TouchableOpacity>
@@ -156,8 +162,10 @@ export default function HabitsScreen() {
                     key={habit.id}
                     onPress={() => handleCheckIn(habit.id)}
                     style={{
-                      backgroundColor: surfaceColor,
+                      backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
                       borderRadius: 16,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                       padding: 16,
                       shadowColor: '#000',
                       shadowOffset: { width: 0, height: 2 },
@@ -168,10 +176,10 @@ export default function HabitsScreen() {
                   >
                     <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
                       <View style={{ flex: 1, marginRight: 12 }}>
-                        <Text style={{ fontSize: 18, fontWeight: 'bold', color: textColor }}>
+                        <Text style={{ fontSize: 14, fontWeight: 'bold', color: textColor }}>
                           {habit.name}
                         </Text>
-                        <Text style={{ fontSize: 14, color: mutedColor, marginTop: 4 }}>
+                        <Text style={{ fontSize: 10, color: mutedColor, marginTop: 4 }}>
                           {habit.targetSets} sets × {habit.targetReps ? `${habit.targetReps} reps` : `${habit.targetTime}s`}
                         </Text>
                         
@@ -184,7 +192,7 @@ export default function HabitsScreen() {
                             gap: 4,
                           }}>
                             <Ionicons name="flame" size={16} color="#f97316" />
-                            <Text style={{ fontSize: 12, color: '#f97316', fontWeight: '600' }}>
+                            <Text style={{ fontSize: 10, color: '#f97316', fontWeight: '600' }}>
                               {habit.currentStreak} day streak
                             </Text>
                           </View>
@@ -198,6 +206,8 @@ export default function HabitsScreen() {
                           width: 56,
                           height: 56,
                           borderRadius: 28,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                           backgroundColor: isCompleted ? '#10b981' : mutedColor + '20',
                           justifyContent: 'center',
                           alignItems: 'center',
@@ -215,8 +225,10 @@ export default function HabitsScreen() {
                     <View style={{ marginTop: 12 }}>
                       <View style={{
                         height: 6,
-                        backgroundColor: isDark ? '#0a0e27' : '#e5e7eb',
+                        backgroundColor: isDark ? '#000000' : '#e5e7eb',
                         borderRadius: 3,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                         overflow: 'hidden',
                       }}>
                         <View
@@ -237,18 +249,20 @@ export default function HabitsScreen() {
           {/* Weekly Calendar Heatmap Placeholder */}
           {habits.length > 0 && (
             <View style={{ marginTop: 32 }}>
-              <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginBottom: 16 }}>
+              <Text style={{ fontSize: 16, fontWeight: 'bold', color: textColor, marginBottom: 16 }}>
                 Activity Overview
               </Text>
               <View style={{
-                backgroundColor: surfaceColor,
+                backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
                 borderRadius: 16,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                 padding: 20,
               }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                   {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => (
                     <View key={day} style={{ alignItems: 'center' }}>
-                      <Text style={{ fontSize: 12, color: mutedColor, marginBottom: 8 }}>
+                      <Text style={{ fontSize: 10, color: mutedColor, marginBottom: 8 }}>
                         {day}
                       </Text>
                       <View
@@ -256,6 +270,8 @@ export default function HabitsScreen() {
                           width: 32,
                           height: 32,
                           borderRadius: 8,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                           backgroundColor: index < 3 ? '#10b981' : mutedColor + '20',
                         }}
                       />
@@ -267,7 +283,7 @@ export default function HabitsScreen() {
           )}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    {/* </SafeAreaView> */}
 
     {/* Log Modal */}
     <Modal
@@ -282,25 +298,27 @@ export default function HabitsScreen() {
           justifyContent: 'flex-end',
         }}>
           <View style={{
-            backgroundColor: surfaceColor,
+            backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
             borderTopLeftRadius: 24,
             borderTopRightRadius: 24,
             padding: 24,
           }}>
-            <Text style={{ fontSize: 22, fontWeight: 'bold', color: textColor, marginBottom: 20 }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: textColor, marginBottom: 20 }}>
               Log Workout
             </Text>
 
             <View style={{ gap: 16 }}>
               <View>
-                <Text style={{ fontSize: 14, color: mutedColor, marginBottom: 8 }}>Sets Completed</Text>
+                <Text style={{ fontSize: 10, color: mutedColor, marginBottom: 8 }}>Sets Completed</Text>
                 <TextInput
                   style={{
-                    backgroundColor: isDark ? '#0a0e27' : '#f8f9fa',
+                    backgroundColor: isDark ? '#000000' : '#f8f9fa',
                     padding: 16,
                     borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                     color: textColor,
-                    fontSize: 16,
+                    fontSize: 12,
                   }}
                   keyboardType="number-pad"
                   placeholder="Enter sets"
@@ -317,11 +335,13 @@ export default function HabitsScreen() {
                     flex: 1,
                     padding: 16,
                     borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                     backgroundColor: mutedColor + '20',
                     alignItems: 'center',
                   }}
                 >
-                  <Text style={{ fontSize: 16, fontWeight: '600', color: textColor }}>
+                  <Text style={{ fontSize: 12, fontWeight: '600', color: textColor }}>
                     Cancel
                   </Text>
                 </TouchableOpacity>
@@ -332,11 +352,13 @@ export default function HabitsScreen() {
                     flex: 1,
                     padding: 16,
                     borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                     backgroundColor: '#6366f1',
                     alignItems: 'center',
                   }}
                 >
-                  <Text style={{ fontSize: 16, fontWeight: '600', color: '#ffffff' }}>
+                  <Text style={{ fontSize: 12, fontWeight: '600', color: '#ffffff' }}>
                     Save
                   </Text>
                 </TouchableOpacity>

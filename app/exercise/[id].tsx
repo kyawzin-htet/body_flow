@@ -24,8 +24,8 @@ export default function ExerciseDetailScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const bgColor = isDark ? '#0a0e27' : '#f8f9fa';
-  const surfaceColor = isDark ? '#1a1f3a' : '#ffffff';
+  const bgColor = isDark ? '#000000' : '#f8f9fa';
+  const surfaceColor = isDark ? '#1a1a1a' : '#ffffff';
   const textColor = isDark ? '#ffffff' : '#000000';
   const mutedColor = isDark ? '#9ca3af' : '#6b7280';
 
@@ -92,7 +92,7 @@ export default function ExerciseDetailScreen() {
     return (
       <View style={{ flex: 1, backgroundColor: bgColor, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator size="large" color="#6366f1" />
-        <Text style={{ fontSize: 14, color: mutedColor, marginTop: 12 }}>
+        <Text style={{ fontSize: 10, color: mutedColor, marginTop: 12 }}>
           Loading exercise...
         </Text>
       </View>
@@ -103,7 +103,7 @@ export default function ExerciseDetailScreen() {
     return (
       <View style={{ flex: 1, backgroundColor: bgColor, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
         <Ionicons name="alert-circle-outline" size={64} color={mutedColor} />
-        <Text style={{ fontSize: 18, fontWeight: 'bold', color: textColor, marginTop: 16 }}>
+        <Text style={{ fontSize: 14, fontWeight: 'bold', color: textColor, marginTop: 16 }}>
           {error || 'Exercise not found'}
         </Text>
         <TouchableOpacity
@@ -116,7 +116,7 @@ export default function ExerciseDetailScreen() {
             borderRadius: 12,
           }}
         >
-          <Text style={{ color: '#ffffff', fontWeight: '600', fontSize: 16 }}>
+          <Text style={{ color: '#ffffff', fontWeight: '600', fontSize: 12 }}>
             Go Back
           </Text>
         </TouchableOpacity>
@@ -155,7 +155,7 @@ export default function ExerciseDetailScreen() {
 
         <View style={{ padding: 20, paddingTop: 24 }}>
           {/* Exercise Name */}
-          <Text style={{ fontSize: 28, fontWeight: 'bold', color: textColor, marginBottom: 8 }}>
+          <Text style={{ fontSize: 24, fontWeight: 'bold', color: textColor, marginBottom: 8 }}>
             {exercise.name}
           </Text>
 
@@ -167,7 +167,7 @@ export default function ExerciseDetailScreen() {
               borderRadius: 8,
               backgroundColor: '#6366f1' + '20',
             }}>
-              <Text style={{ fontSize: 12, color: '#6366f1', fontWeight: '600' }}>
+              <Text style={{ fontSize: 10, color: '#6366f1', fontWeight: '600' }}>
                 {exercise.bodyPart}
               </Text>
             </View>
@@ -177,7 +177,7 @@ export default function ExerciseDetailScreen() {
               borderRadius: 8,
               backgroundColor: '#f97316' + '20',
             }}>
-              <Text style={{ fontSize: 12, color: '#f97316', fontWeight: '600' }}>
+              <Text style={{ fontSize: 10, color: '#f97316', fontWeight: '600' }}>
                 {exercise.target}
               </Text>
             </View>
@@ -187,7 +187,7 @@ export default function ExerciseDetailScreen() {
               borderRadius: 8,
               backgroundColor: '#10b981' + '20',
             }}>
-              <Text style={{ fontSize: 12, color: '#10b981', fontWeight: '600' }}>
+              <Text style={{ fontSize: 10, color: '#10b981', fontWeight: '600' }}>
                 {exercise.equipment}
               </Text>
             </View>
@@ -197,7 +197,7 @@ export default function ExerciseDetailScreen() {
               borderRadius: 8,
               backgroundColor: '#8b5cf6' + '20',
             }}>
-              <Text style={{ fontSize: 12, color: '#8b5cf6', fontWeight: '600' }}>
+              <Text style={{ fontSize: 10, color: '#8b5cf6', fontWeight: '600' }}>
                 {exercise.difficulty}
               </Text>
             </View>
@@ -206,11 +206,13 @@ export default function ExerciseDetailScreen() {
           {/* Instructions */}
           {exercise.instructions && exercise.instructions.length > 0 && (
             <View style={{ marginBottom: 24 }}>
-              <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>
+              <Text style={{ fontSize: 16, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>
                 Instructions
               </Text>
               <View style={{
-                backgroundColor: surfaceColor,
+                backgroundColor: isDark ? 'rgba(30, 30, 30, 0.4)' : 'rgba(255, 255, 255, 0.5)',
+                borderWidth: 1,
+                borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0,0,0,0.1)',
                 padding: 16,
                 borderRadius: 16,
                 gap: 12,
@@ -225,11 +227,11 @@ export default function ExerciseDetailScreen() {
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}>
-                      <Text style={{ color: '#ffffff', fontSize: 12, fontWeight: 'bold' }}>
+                      <Text style={{ color: '#ffffff', fontSize: 10, fontWeight: 'bold' }}>
                         {index + 1}
                       </Text>
                     </View>
-                    <Text style={{ flex: 1, fontSize: 14, color: textColor, lineHeight: 20 }}>
+                    <Text style={{ flex: 1, fontSize: 10, color: textColor, lineHeight: 20 }}>
                       {instruction}
                     </Text>
                   </View>
@@ -241,7 +243,7 @@ export default function ExerciseDetailScreen() {
           {/* Secondary Muscles */}
           {exercise.secondaryMuscles && exercise.secondaryMuscles.length > 0 && (
             <View style={{ marginBottom: 24 }}>
-              <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>
+              <Text style={{ fontSize: 16, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>
                 Secondary Muscles
               </Text>
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
@@ -252,10 +254,12 @@ export default function ExerciseDetailScreen() {
                       paddingHorizontal: 12,
                       paddingVertical: 8,
                       borderRadius: 8,
-                      backgroundColor: surfaceColor,
+                      backgroundColor: isDark ? 'rgba(30, 30, 30, 0.6)' : 'rgba(255, 255, 255, 0.7)',
+                      borderWidth: 1,
+                      borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0,0,0,0.1)',
                     }}
                   >
-                    <Text style={{ fontSize: 14, color: textColor }}>
+                    <Text style={{ fontSize: 10, color: textColor }}>
                       {muscle}
                     </Text>
                   </View>
@@ -266,21 +270,23 @@ export default function ExerciseDetailScreen() {
 
           {/* Exercise Info */}
           <View style={{
-            backgroundColor: surfaceColor,
+            backgroundColor: isDark ? 'rgba(30, 30, 30, 0.4)' : 'rgba(255, 255, 255, 0.5)',
+            borderWidth: 1,
+            borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0,0,0,0.1)',
             padding: 16,
             borderRadius: 16,
             marginBottom: 24,
           }}>
             <View style={{ gap: 12 }}>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={{ fontSize: 14, color: mutedColor }}>Category</Text>
-                <Text style={{ fontSize: 14, fontWeight: '600', color: textColor, textTransform: 'capitalize' }}>
+                <Text style={{ fontSize: 10, color: mutedColor }}>Category</Text>
+                <Text style={{ fontSize: 10, fontWeight: '600', color: textColor, textTransform: 'capitalize' }}>
                   {exercise.category}
                 </Text>
               </View>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={{ fontSize: 14, color: mutedColor }}>Difficulty</Text>
-                <Text style={{ fontSize: 14, fontWeight: '600', color: textColor, textTransform: 'capitalize' }}>
+                <Text style={{ fontSize: 10, color: mutedColor }}>Difficulty</Text>
+                <Text style={{ fontSize: 10, fontWeight: '600', color: textColor, textTransform: 'capitalize' }}>
                   {exercise.difficulty}
                 </Text>
               </View>
@@ -290,7 +296,7 @@ export default function ExerciseDetailScreen() {
           {/* Related Video */}
           {videoId && (
             <View style={{ marginBottom: 24 }}>
-              <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>
+              <Text style={{ fontSize: 16, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>
                 Related Video
               </Text>
               <View style={{ borderRadius: 16, overflow: 'hidden', backgroundColor: surfaceColor, opacity: 0.99 }}>
@@ -312,9 +318,9 @@ export default function ExerciseDetailScreen() {
       <View style={{
         padding: 20,
         paddingBottom: 30,
-        backgroundColor: surfaceColor,
+        backgroundColor: isDark ? 'rgba(26, 26, 26, 0.95)' : 'rgba(255, 255, 255, 0.95)',
         borderTopWidth: 1,
-        borderTopColor: isDark ? '#2d3250' : '#e5e7eb',
+        borderTopColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0,0,0,0.1)',
       }}>
         <TouchableOpacity
           onPress={handleCreateHabit}
@@ -329,7 +335,7 @@ export default function ExerciseDetailScreen() {
           }}
         >
           <Ionicons name="add-circle" size={24} color="#ffffff" />
-          <Text style={{ fontSize: 16, fontWeight: '600', color: '#ffffff' }}>
+          <Text style={{ fontSize: 12, fontWeight: '600', color: '#ffffff' }}>
             Create Habit from This Exercise
           </Text>
         </TouchableOpacity>

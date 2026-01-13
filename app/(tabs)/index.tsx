@@ -9,6 +9,7 @@ import { CoachService } from '../../src/services/coachService';
 import { useTheme } from '../../src/hooks/useTheme';
 import { MOTIVATIONAL_QUOTES } from '../../src/utils/constants';
 import { CoachRecommendation } from '../../src/types';
+import { CongratulationsModal } from '../../src/components/CongratulationsModal';
 
 if (Platform.OS === 'android') {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -27,6 +28,9 @@ export default function HomeScreen() {
   const [coachTip, setCoachTip] = useState('');
   const [recommendations, setRecommendations] = useState<CoachRecommendation[]>([]);
   const [showWelcome, setShowWelcome] = useState(true);
+  const [showCongratulations, setShowCongratulations] = useState(false);
+  const hasShownCongratsToday = useRef(false);
+  const previousAmount = useRef(0);
   const appState = useRef(AppState.currentState);
 
   useEffect(() => {
@@ -90,8 +94,32 @@ const loadCoachData = async () => {
     }
   }, [user, loadHydration]);
 
-  const bgColor = isDark ? '#0a0e27' : '#f8f9fa';
-  const surfaceColor = isDark ? '#1a1f3a' : '#ffffff';
+  // Check if hydration goal is reached and show congratulations
+  useEffect(() => {
+    if (!hydrationLog) return;
+    
+    const goalReached = hydrationLog.amountMl >= hydrationLog.goalMl;
+    const wasNotReached = previousAmount.current < hydrationLog.goalMl;
+    const currentDate = new Date().toISOString().split('T')[0];
+    
+    // Show congratulations only when goal is FIRST reached (transitioning from not-reached to reached)
+    if (goalReached && wasNotReached && hydrationLog.date === currentDate && !hasShownCongratsToday.current) {
+      hasShownCongratsToday.current = true;
+      setShowCongratulations(true);
+    }
+    
+    // Update previous amount
+    previousAmount.current = hydrationLog.amountMl;
+    
+    // Reset the flag when the date changes
+    if (hydrationLog.date !== currentDate) {
+      hasShownCongratsToday.current = false;
+      previousAmount.current = 0;
+    }
+  }, [hydrationLog?.amountMl, hydrationLog?.goalMl, hydrationLog?.date]);
+
+  const bgColor = isDark ? '#000000' : '#f8f9fa';
+  const surfaceColor = isDark ? '#1a1a1a' : '#ffffff';
   const textColor = isDark ? '#ffffff' : '#000000';
   const mutedColor = isDark ? '#9ca3af' : '#6b7280';
 
@@ -105,10 +133,10 @@ const loadCoachData = async () => {
         {/* Welcome Section */}
         {showWelcome && (
           <View style={{ marginBottom: 24 }}>
-            <Text style={{ fontSize: 32, fontWeight: 'bold', color: textColor }}>
+            <Text style={{ fontSize: 28, fontWeight: 'bold', color: textColor }}>
               Welcome back{user ? `, ${user.name}` : ''}! 👋
             </Text>
-            <Text style={{ fontSize: 16, color: mutedColor, marginTop: 4 }}>
+            <Text style={{ fontSize: 12, color: mutedColor, marginTop: 4 }}>
               {quote}
             </Text>
           </View>
@@ -122,9 +150,11 @@ const loadCoachData = async () => {
         }}>
           <View style={{ 
             flex: 1, 
-            backgroundColor: surfaceColor, 
+            backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)", 
             padding: 16, 
             borderRadius: 16,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
             shadowColor: '#000',
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.1,
@@ -132,17 +162,19 @@ const loadCoachData = async () => {
             elevation: 3,
           }}>
             <Ionicons name="flame" size={24} color="#f97316" />
-            <Text style={{ fontSize: 24, fontWeight: 'bold', color: textColor, marginTop: 8 }}>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginTop: 8 }}>
               {habits[0]?.currentStreak || 0}
             </Text>
-            <Text style={{ fontSize: 12, color: mutedColor }}>Day Streak</Text>
+            <Text style={{ fontSize: 10, color: mutedColor }}>Day Streak</Text>
           </View>
 
           <View style={{ 
             flex: 1, 
-            backgroundColor: surfaceColor, 
+            backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)", 
             padding: 16, 
             borderRadius: 16,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
             shadowColor: '#000',
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.1,
@@ -150,74 +182,114 @@ const loadCoachData = async () => {
             elevation: 3,
           }}>
             <Ionicons name="checkbox" size={24} color="#10b981" />
-            <Text style={{ fontSize: 24, fontWeight: 'bold', color: textColor, marginTop: 8 }}>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginTop: 8 }}>
               {completedToday}/{totalHabits}
             </Text>
-            <Text style={{ fontSize: 12, color: mutedColor }}>Today's Habits</Text>
+            <Text style={{ fontSize: 10, color: mutedColor }}>Today's Habits</Text>
           </View>
         </View>
 
         {/* Hydration Tracker */}
         <View style={{ marginBottom: 24 }}>
           <View style={{ 
-            backgroundColor: '#3b82f6' + '20', // Blue tint
+            backgroundColor: '#3b82f6' + '20',
             padding: 20, 
             borderRadius: 20,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
             overflow: 'hidden',
-            position: 'relative'
           }}>
-            {/* Background water effect */}
-            <View style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: `${Math.min(((hydrationLog?.amountMl || 0) / (hydrationLog?.goalMl || 2000)) * 100, 100)}%`,
-              backgroundColor: '#3b82f6' + '40',
-              zIndex: -1,
-            }} />
+            {/* Header */}
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+              <Ionicons name="water" size={24} color="#3b82f6" />
+              <Text style={{ fontSize: 16, fontWeight: 'bold', color: textColor }}>
+                Hydration
+              </Text>
+            </View>
 
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-              <View>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                  <Ionicons name="water" size={24} color="#3b82f6" />
-                  <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor }}>
-                    Hydration
-                  </Text>
-                </View>
-                <Text style={{ fontSize: 32, fontWeight: 'bold', color: textColor, marginTop: 8 }}>
-                  {hydrationLog?.amountMl || 0} <Text style={{ fontSize: 16, color: mutedColor }}>/ {hydrationLog?.goalMl || 2000}ml</Text>
+            {/* Progress Percentage */}
+            <View style={{ alignItems: 'center', marginBottom: 16 }}>
+              <Text style={{ fontSize: 44, fontWeight: 'bold', color: '#3b82f6' }}>
+                {Math.round(((hydrationLog?.amountMl || 0) / (hydrationLog?.goalMl || 2000)) * 100)}%
+              </Text>
+              <Text style={{ fontSize: 10, color: mutedColor }}>
+                of daily goal
+              </Text>
+            </View>
+
+            {/* Progress Bar */}
+            <View style={{
+              height: 12,
+              backgroundColor: isDark ? '#000000' : '#e5e7eb',
+              borderRadius: 6,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
+              overflow: 'hidden',
+              marginBottom: 16,
+            }}>
+              <View style={{
+                width: `${Math.min(((hydrationLog?.amountMl || 0) / (hydrationLog?.goalMl || 2000)) * 100, 100)}%`,
+                height: '100%',
+                backgroundColor: '#3b82f6',
+              }} />
+            </View>
+
+            {/* Detailed Stats */}
+            <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginBottom: 16 }}>
+              <View style={{ alignItems: 'center' }}>
+                <Text style={{ fontSize: 10, color: mutedColor }}>Drank</Text>
+                <Text style={{ fontSize: 14, fontWeight: 'bold', color: textColor, marginTop: 4 }}>
+                  {((hydrationLog?.amountMl || 0) / 1000).toFixed(2)} L
                 </Text>
               </View>
-              
-              <View style={{ gap: 8 }}>
-                <TouchableOpacity
-                  onPress={() => user && logWater(user.id, 250)}
-                  style={{
-                    backgroundColor: '#3b82f6',
-                    paddingHorizontal: 16,
-                    paddingVertical: 8,
-                    borderRadius: 12,
-                    alignItems: 'center',
-                  }}
-                >
-                  <Text style={{ color: '#ffffff', fontWeight: 'bold' }}>+250ml</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => user && logWater(user.id, 500)}
-                  style={{
-                    backgroundColor: surfaceColor,
-                    paddingHorizontal: 16,
-                    paddingVertical: 8,
-                    borderRadius: 12,
-                    alignItems: 'center',
-                    borderWidth: 1,
-                    borderColor: '#3b82f6',
-                  }}
-                >
-                  <Text style={{ color: textColor, fontWeight: 'bold' }}>+500ml</Text>
-                </TouchableOpacity>
+              <View style={{ width: 1, backgroundColor: mutedColor + '30' }} />
+              <View style={{ alignItems: 'center' }}>
+                <Text style={{ fontSize: 10, color: mutedColor }}>Goal</Text>
+                <Text style={{ fontSize: 14, fontWeight: 'bold', color: textColor, marginTop: 4 }}>
+                  {((hydrationLog?.goalMl || 2000) / 1000).toFixed(2)} L
+                </Text>
               </View>
+              <View style={{ width: 1, backgroundColor: mutedColor + '30' }} />
+              <View style={{ alignItems: 'center' }}>
+                <Text style={{ fontSize: 10, color: mutedColor }}>Remaining</Text>
+                <Text style={{ fontSize: 14, fontWeight: 'bold', color: textColor, marginTop: 4 }}>
+                  {(Math.max((hydrationLog?.goalMl || 2000) - (hydrationLog?.amountMl || 0), 0) / 1000).toFixed(2)} L
+                </Text>
+              </View>
+            </View>
+
+            {/* Quick Add Buttons */}
+            <View style={{ flexDirection: 'row', gap: 8 }}>
+              <TouchableOpacity
+                onPress={() => user && logWater(user.id, 250)}
+                style={{
+                  flex: 1,
+                  backgroundColor: '#3b82f6',
+                  paddingVertical: 12,
+                  borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={{ color: '#ffffff', fontWeight: 'bold' }}>+0.25L</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => user && logWater(user.id, 500)}
+                style={{
+                  flex: 1,
+                  backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
+                  paddingVertical: 12,
+                  borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
+                  alignItems: 'center',
+                  borderWidth: 1,
+                  borderColor: '#3b82f6',
+                }}
+              >
+                <Text style={{ color: textColor, fontWeight: 'bold' }}>+0.50L</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -227,7 +299,7 @@ const loadCoachData = async () => {
           <View style={{ marginBottom: 24 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
               <Ionicons name="bulb" size={20} color="#f59e0b" />
-              <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginLeft: 8 }}>
+              <Text style={{ fontSize: 16, fontWeight: 'bold', color: textColor, marginLeft: 8 }}>
                 Smart Coach
               </Text>
             </View>
@@ -252,6 +324,8 @@ const loadCoachData = async () => {
                       backgroundColor: priorityBgColors[rec.priority],
                       padding: 16,
                       borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                       borderLeftWidth: 4,
                       borderLeftColor: priorityColors[rec.priority],
                     }}
@@ -267,7 +341,7 @@ const loadCoachData = async () => {
                         size={20}
                         color={priorityColors[rec.priority]}
                       />
-                      <Text style={{ flex: 1, fontSize: 14, color: textColor, lineHeight: 20 }}>
+                      <Text style={{ flex: 1, fontSize: 10, color: textColor, lineHeight: 20 }}>
                         {rec.message}
                       </Text>
                     </View>
@@ -280,19 +354,21 @@ const loadCoachData = async () => {
 
         {/* Today's Habits */}
         <View style={{ marginBottom: 24 }}>
-          <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>
+          <Text style={{ fontSize: 16, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>
             Today's Training
           </Text>
           
           {totalHabits === 0 ? (
             <View style={{ 
-              backgroundColor: surfaceColor, 
+              backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)", 
               padding: 20, 
               borderRadius: 16,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
               alignItems: 'center',
             }}>
               <Ionicons name="add-circle-outline" size={48} color={mutedColor} />
-              <Text style={{ fontSize: 16, color: mutedColor, marginTop: 12, textAlign: 'center' }}>
+              <Text style={{ fontSize: 12, color: mutedColor, marginTop: 12, textAlign: 'center' }}>
                 No habits yet. Create your first training habit!
               </Text>
               <Link href="/habits" asChild>
@@ -303,6 +379,8 @@ const loadCoachData = async () => {
                     paddingHorizontal: 24,
                     paddingVertical: 12,
                     borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                   }}
                 >
                   <Text style={{ color: '#ffffff', fontWeight: '600' }}>
@@ -328,9 +406,11 @@ const loadCoachData = async () => {
                     });
                   }}
                   style={{
-                    backgroundColor: surfaceColor,
+                    backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
                     padding: 16,
                     borderRadius: 16,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                     marginBottom: 12,
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -338,10 +418,10 @@ const loadCoachData = async () => {
                   }}
                 >
                   <View style={{ flex: 1 }}>
-                    <Text style={{ fontSize: 16, fontWeight: '600', color: textColor }}>
+                    <Text style={{ fontSize: 12, fontWeight: '600', color: textColor }}>
                       {habit.name}
                     </Text>
-                    <Text style={{ fontSize: 14, color: mutedColor, marginTop: 4 }}>
+                    <Text style={{ fontSize: 10, color: mutedColor, marginTop: 4 }}>
                       {habit.targetSets} sets × {habit.targetReps || habit.targetTime + 's'}
                     </Text>
                   </View>
@@ -358,7 +438,7 @@ const loadCoachData = async () => {
 
         {/* Quick Actions */}
         <View style={{ marginBottom: 24 }}>
-          <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>
+          <Text style={{ fontSize: 16, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>
             Quick Actions
           </Text>
           
@@ -366,9 +446,11 @@ const loadCoachData = async () => {
             <Link href="/timer" asChild>
               <TouchableOpacity
                 style={{
-                  backgroundColor: surfaceColor,
+                  backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
                   padding: 16,
                   borderRadius: 16,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                   flexDirection: 'row',
                   alignItems: 'center',
                   gap: 12,
@@ -377,7 +459,9 @@ const loadCoachData = async () => {
                 <View style={{ 
                   width: 48, 
                   height: 48, 
-                  borderRadius: 12, 
+                  borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)", 
                   backgroundColor: '#ef4444', 
                   justifyContent: 'center', 
                   alignItems: 'center' 
@@ -385,10 +469,10 @@ const loadCoachData = async () => {
                   <Ionicons name="timer" size={24} color="#ffffff" />
                 </View>
                 <View style={{ flex: 1 }}>
-                  <Text style={{ fontSize: 16, fontWeight: '600', color: textColor }}>
+                  <Text style={{ fontSize: 12, fontWeight: '600', color: textColor }}>
                     Interval Timer
                   </Text>
-                  <Text style={{ fontSize: 14, color: mutedColor }}>
+                  <Text style={{ fontSize: 10, color: mutedColor }}>
                     Tabata & HIIT workouts
                   </Text>
                 </View>
@@ -399,9 +483,11 @@ const loadCoachData = async () => {
             <Link href="/muscles" asChild>
               <TouchableOpacity
                 style={{
-                  backgroundColor: surfaceColor,
+                  backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
                   padding: 16,
                   borderRadius: 16,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                   flexDirection: 'row',
                   alignItems: 'center',
                   gap: 12,
@@ -410,7 +496,9 @@ const loadCoachData = async () => {
                 <View style={{ 
                   width: 48, 
                   height: 48, 
-                  borderRadius: 12, 
+                  borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)", 
                   backgroundColor: '#6366f1', 
                   justifyContent: 'center', 
                   alignItems: 'center' 
@@ -418,10 +506,10 @@ const loadCoachData = async () => {
                   <Ionicons name="body" size={24} color="#ffffff" />
                 </View>
                 <View style={{ flex: 1 }}>
-                  <Text style={{ fontSize: 16, fontWeight: '600', color: textColor }}>
+                  <Text style={{ fontSize: 12, fontWeight: '600', color: textColor }}>
                     Browse Exercises
                   </Text>
-                  <Text style={{ fontSize: 14, color: mutedColor }}>
+                  <Text style={{ fontSize: 10, color: mutedColor }}>
                     Find exercises by muscle group
                   </Text>
                 </View>
@@ -432,9 +520,11 @@ const loadCoachData = async () => {
             <Link href="/skills" asChild>
               <TouchableOpacity
                 style={{
-                  backgroundColor: surfaceColor,
+                  backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
                   padding: 16,
                   borderRadius: 16,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                   flexDirection: 'row',
                   alignItems: 'center',
                   gap: 12,
@@ -443,7 +533,9 @@ const loadCoachData = async () => {
                 <View style={{ 
                   width: 48, 
                   height: 48, 
-                  borderRadius: 12, 
+                  borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)", 
                   backgroundColor: '#f97316', 
                   justifyContent: 'center', 
                   alignItems: 'center' 
@@ -451,10 +543,10 @@ const loadCoachData = async () => {
                   <Ionicons name="trophy" size={24} color="#ffffff" />
                 </View>
                 <View style={{ flex: 1 }}>
-                  <Text style={{ fontSize: 16, fontWeight: '600', color: textColor }}>
+                  <Text style={{ fontSize: 12, fontWeight: '600', color: textColor }}>
                     Skill Progressions
                   </Text>
-                  <Text style={{ fontSize: 14, color: mutedColor }}>
+                  <Text style={{ fontSize: 10, color: mutedColor }}>
                     Work towards advanced skills
                   </Text>
                 </View>
@@ -465,9 +557,11 @@ const loadCoachData = async () => {
             <Link href="/analytics" asChild>
               <TouchableOpacity
                 style={{
-                  backgroundColor: surfaceColor,
+                  backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
                   padding: 16,
                   borderRadius: 16,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                   flexDirection: 'row',
                   alignItems: 'center',
                   gap: 12,
@@ -476,7 +570,9 @@ const loadCoachData = async () => {
                 <View style={{ 
                   width: 48, 
                   height: 48, 
-                  borderRadius: 12, 
+                  borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)", 
                   backgroundColor: '#10b981', 
                   justifyContent: 'center', 
                   alignItems: 'center' 
@@ -484,10 +580,10 @@ const loadCoachData = async () => {
                   <Ionicons name="stats-chart" size={24} color="#ffffff" />
                 </View>
                 <View style={{ flex: 1 }}>
-                  <Text style={{ fontSize: 16, fontWeight: '600', color: textColor }}>
+                  <Text style={{ fontSize: 12, fontWeight: '600', color: textColor }}>
                     View Analytics
                   </Text>
-                  <Text style={{ fontSize: 14, color: mutedColor }}>
+                  <Text style={{ fontSize: 10, color: mutedColor }}>
                     Track your progress
                   </Text>
                 </View>
@@ -497,6 +593,15 @@ const loadCoachData = async () => {
           </View>
         </View>
       </View>
+
+      {/* Congratulations Modal */}
+      <CongratulationsModal
+        visible={showCongratulations}
+        onClose={() => { setShowCongratulations(false); }}
+        amountDrank={hydrationLog?.amountMl || 0}
+        goal={hydrationLog?.goalMl || 2000}
+        isDark={isDark}
+      />
     </ScrollView>
   );
 }

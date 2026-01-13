@@ -21,8 +21,8 @@ export default function OnboardingScreen() {
   const [skillLevel, setSkillLevel] = useState<SkillLevel>('beginner');
   const [frequency, setFrequency] = useState(3);
 
-  const bgColor = isDark ? '#0a0e27' : '#f8f9fa';
-  const surfaceColor = isDark ? '#1a1f3a' : '#ffffff';
+  const bgColor = isDark ? '#000000' : '#f8f9fa';
+  const surfaceColor = isDark ? '#1a1a1a' : '#ffffff';
   const textColor = isDark ? '#ffffff' : '#000000';
   const mutedColor = isDark ? '#9ca3af' : '#6b7280';
 
@@ -106,10 +106,10 @@ export default function OnboardingScreen() {
           </View>
 
           {/* Step Content */}
-          <Text style={{ fontSize: 32, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>
+          <Text style={{ fontSize: 28, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>
             {currentStep.title}
           </Text>
-          <Text style={{ fontSize: 16, color: mutedColor, marginBottom: 32 }}>
+          <Text style={{ fontSize: 12, color: mutedColor, marginBottom: 32 }}>
             {currentStep.description}
           </Text>
 
@@ -127,7 +127,7 @@ export default function OnboardingScreen() {
               }}>
                 <Ionicons name="fitness" size={60} color="#ffffff" />
               </View>
-              <Text style={{ fontSize: 18, color: textColor, textAlign: 'center', lineHeight: 28 }}>
+              <Text style={{ fontSize: 14, color: textColor, textAlign: 'center', lineHeight: 28 }}>
                 BodyFlow helps you master gymnastics skills, build strength, and track your progress—all offline.
               </Text>
             </View>
@@ -155,7 +155,7 @@ export default function OnboardingScreen() {
                     color={selectedGoals.includes(goal.value) ? '#ffffff' : '#6366f1'}
                   />
                   <Text style={{
-                    fontSize: 18,
+                    fontSize: 14,
                     fontWeight: '600',
                     color: selectedGoals.includes(goal.value) ? '#ffffff' : textColor,
                   }}>
@@ -187,7 +187,7 @@ export default function OnboardingScreen() {
                     color={selectedMuscles.includes(muscle.name) ? '#ffffff' : muscle.color}
                   />
                   <Text style={{
-                    fontSize: 16,
+                    fontSize: 12,
                     fontWeight: '600',
                     color: selectedMuscles.includes(muscle.name) ? '#ffffff' : textColor,
                     marginTop: 8,
@@ -213,7 +213,7 @@ export default function OnboardingScreen() {
                   }}
                 >
                   <Text style={{
-                    fontSize: 18,
+                    fontSize: 14,
                     fontWeight: '600',
                     color: skillLevel === level.value ? '#ffffff' : textColor,
                     marginBottom: 4,
@@ -221,7 +221,7 @@ export default function OnboardingScreen() {
                     {level.label}
                   </Text>
                   <Text style={{
-                    fontSize: 14,
+                    fontSize: 10,
                     color: skillLevel === level.value ? '#ffffff' + 'CC' : mutedColor,
                   }}>
                     {level.description}
@@ -248,7 +248,7 @@ export default function OnboardingScreen() {
                   }}
                 >
                   <Text style={{
-                    fontSize: 18,
+                    fontSize: 14,
                     fontWeight: '600',
                     color: frequency === freq.value ? '#ffffff' : textColor,
                   }}>
@@ -284,7 +284,7 @@ export default function OnboardingScreen() {
                 alignItems: 'center',
               }}
             >
-              <Text style={{ fontSize: 16, fontWeight: '600', color: textColor }}>
+              <Text style={{ fontSize: 12, fontWeight: '600', color: textColor }}>
                 Back
               </Text>
             </TouchableOpacity>
@@ -301,7 +301,7 @@ export default function OnboardingScreen() {
               alignItems: 'center',
             }}
           >
-            <Text style={{ fontSize: 16, fontWeight: '600', color: '#ffffff' }}>
+            <Text style={{ fontSize: 12, fontWeight: '600', color: '#ffffff' }}>
               {isLastStep ? 'Get Started' : 'Continue'}
             </Text>
           </TouchableOpacity>

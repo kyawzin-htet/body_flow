@@ -67,6 +67,22 @@ export class HydrationRepository {
   }
 
   /**
+   * Get hydration history for a date range
+   */
+  static async getHistory(userId: number, startDate: string, endDate: string): Promise<HydrationLog[]> {
+    const db = await getDatabase();
+    
+    const rows = await db.getAllAsync<any>(
+      `SELECT * FROM hydration_logs 
+       WHERE user_id = ? AND date >= ? AND date <= ?
+       ORDER BY date DESC`,
+      [userId, startDate, endDate]
+    );
+
+    return rows.map(row => this.mapRowToLog(row));
+  }
+
+  /**
    * Map database row to HydrationLog object
    */
   private static mapRowToLog(row: any): HydrationLog {

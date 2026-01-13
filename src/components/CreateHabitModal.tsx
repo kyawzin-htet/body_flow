@@ -26,7 +26,7 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
   const [targetTime, setTargetTime] = useState('30');
   const [frequency, setFrequency] = useState<'daily' | 'weekly'>('daily');
 
-  const surfaceColor = isDark ? '#1a1f3a' : '#ffffff';
+  const surfaceColor = isDark ? '#1a1a1a' : '#ffffff';
   const textColor = isDark ? '#ffffff' : '#000000';
   const mutedColor = isDark ? '#9ca3af' : '#6b7280';
   const bgInput = isDark ? '#0a0e27' : '#f8f9fa';
@@ -74,7 +74,7 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
         }}>
           {/* Header */}
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-            <Text style={{ fontSize: 22, fontWeight: 'bold', color: textColor }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: textColor }}>
               Create New Habit
             </Text>
             <TouchableOpacity onPress={onClose}>
@@ -86,14 +86,14 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
           <View style={{ gap: 20 }}>
             {/* Name */}
             <View>
-              <Text style={{ fontSize: 14, color: mutedColor, marginBottom: 8 }}>Habit Name *</Text>
+              <Text style={{ fontSize: 10, color: mutedColor, marginBottom: 8 }}>Habit Name *</Text>
               <TextInput
                 style={{
                   backgroundColor: bgInput,
                   padding: 16,
                   borderRadius: 12,
                   color: textColor,
-                  fontSize: 16,
+                  fontSize: 12,
                 }}
                 placeholder="e.g., Push-ups, Handstand Practice"
                 placeholderTextColor={mutedColor}
@@ -104,7 +104,7 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
 
             {/* Type */}
             <View>
-              <Text style={{ fontSize: 14, color: mutedColor, marginBottom: 8 }}>Type</Text>
+              <Text style={{ fontSize: 10, color: mutedColor, marginBottom: 8 }}>Type</Text>
               <View style={{ flexDirection: 'row', gap: 12 }}>
                 <TouchableOpacity
                   onPress={() => setType('reps')}
@@ -116,7 +116,7 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
                     alignItems: 'center',
                   }}
                 >
-                  <Text style={{ fontSize: 16, fontWeight: '600', color: type === 'reps' ? '#ffffff' : textColor }}>
+                  <Text style={{ fontSize: 12, fontWeight: '600', color: type === 'reps' ? '#ffffff' : textColor }}>
                     Reps
                   </Text>
                 </TouchableOpacity>
@@ -130,7 +130,7 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
                     alignItems: 'center',
                   }}
                 >
-                  <Text style={{ fontSize: 16, fontWeight: '600', color: type === 'time' ? '#ffffff' : textColor }}>
+                  <Text style={{ fontSize: 12, fontWeight: '600', color: type === 'time' ? '#ffffff' : textColor }}>
                     Time
                   </Text>
                 </TouchableOpacity>
@@ -139,14 +139,14 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
 
             {/* Sets */}
             <View>
-              <Text style={{ fontSize: 14, color: mutedColor, marginBottom: 8 }}>Target Sets</Text>
+              <Text style={{ fontSize: 10, color: mutedColor, marginBottom: 8 }}>Target Sets</Text>
               <TextInput
                 style={{
                   backgroundColor: bgInput,
                   padding: 16,
                   borderRadius: 12,
                   color: textColor,
-                  fontSize: 16,
+                  fontSize: 12,
                 }}
                 keyboardType="number-pad"
                 placeholder="3"
@@ -159,14 +159,14 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
             {/* Reps or Time */}
             {type === 'reps' ? (
               <View>
-                <Text style={{ fontSize: 14, color: mutedColor, marginBottom: 8 }}>Reps per Set</Text>
+                <Text style={{ fontSize: 10, color: mutedColor, marginBottom: 8 }}>Reps per Set</Text>
                 <TextInput
                   style={{
                     backgroundColor: bgInput,
                     padding: 16,
                     borderRadius: 12,
                     color: textColor,
-                    fontSize: 16,
+                    fontSize: 12,
                   }}
                   keyboardType="number-pad"
                   placeholder="10"
@@ -177,14 +177,14 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
               </View>
             ) : (
               <View>
-                <Text style={{ fontSize: 14, color: mutedColor, marginBottom: 8 }}>Seconds per Set</Text>
+                <Text style={{ fontSize: 10, color: mutedColor, marginBottom: 8 }}>Seconds per Set</Text>
                 <TextInput
                   style={{
                     backgroundColor: bgInput,
                     padding: 16,
                     borderRadius: 12,
                     color: textColor,
-                    fontSize: 16,
+                    fontSize: 12,
                   }}
                   keyboardType="number-pad"
                   placeholder="30"
@@ -197,7 +197,7 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
 
             {/* Frequency */}
             <View>
-              <Text style={{ fontSize: 14, color: mutedColor, marginBottom: 8 }}>Frequency</Text>
+              <Text style={{ fontSize: 10, color: mutedColor, marginBottom: 8 }}>Frequency</Text>
               <View style={{ flexDirection: 'row', gap: 12 }}>
                 <TouchableOpacity
                   onPress={() => setFrequency('daily')}
@@ -209,7 +209,7 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
                     alignItems: 'center',
                   }}
                 >
-                  <Text style={{ fontSize: 16, fontWeight: '600', color: frequency === 'daily' ? '#ffffff' : textColor }}>
+                  <Text style={{ fontSize: 12, fontWeight: '600', color: frequency === 'daily' ? '#ffffff' : textColor }}>
                     Daily
                   </Text>
                 </TouchableOpacity>
@@ -223,7 +223,7 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
                     alignItems: 'center',
                   }}
                 >
-                  <Text style={{ fontSize: 16, fontWeight: '600', color: frequency === 'weekly' ? '#ffffff' : textColor }}>
+                  <Text style={{ fontSize: 12, fontWeight: '600', color: frequency === 'weekly' ? '#ffffff' : textColor }}>
                     Weekly
                   </Text>
                 </TouchableOpacity>
@@ -242,7 +242,7 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
                   alignItems: 'center',
                 }}
               >
-                <Text style={{ fontSize: 16, fontWeight: '600', color: textColor }}>
+                <Text style={{ fontSize: 12, fontWeight: '600', color: textColor }}>
                   Cancel
                 </Text>
               </TouchableOpacity>
@@ -258,7 +258,7 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
                   alignItems: 'center',
                 }}
               >
-                <Text style={{ fontSize: 16, fontWeight: '600', color: '#ffffff' }}>
+                <Text style={{ fontSize: 12, fontWeight: '600', color: '#ffffff' }}>
                   Create
                 </Text>
               </TouchableOpacity>

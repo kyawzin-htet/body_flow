@@ -17,8 +17,8 @@ export default function MusclesScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const bgColor = isDark ? '#0a0e27' : '#f8f9fa';
-  const surfaceColor = isDark ? '#1a1f3a' : '#ffffff';
+  const bgColor = isDark ? '#000000' : '#f8f9fa';
+  const surfaceColor = isDark ? '#1a1a1a' : '#ffffff';
   const textColor = isDark ? '#ffffff' : '#000000';
   const mutedColor = isDark ? '#9ca3af' : '#6b7280';
 
@@ -45,13 +45,13 @@ export default function MusclesScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: bgColor }}>
+     <View style={{ flex: 1, backgroundColor: bgColor }}>
     <ScrollView style={{ flex: 1 }}>
       <View style={{ padding: 20 }}>
-        {/* <Text style={{ fontSize: 24, fontWeight: 'bold', color: textColor, marginBottom: 8 }}>
+        {/* <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginBottom: 8 }}>
           Muscle Groups
         </Text> */}
-        <Text style={{ fontSize: 16, color: mutedColor, marginBottom: 24 }}>
+        <Text style={{ fontSize: 12, color: mutedColor, marginBottom: 12 }}>
           Select a muscle group to find exercises
         </Text>
 
@@ -68,13 +68,15 @@ export default function MusclesScreen() {
               onPress={() => handleMuscleSelect(muscle.name)}
               style={{
                 width: '47%',
-                backgroundColor: selectedMuscle === muscle.name ? muscle.color : surfaceColor,
+                backgroundColor: selectedMuscle === muscle.name ? muscle.color : (isDark ? 'rgba(30, 30, 30, 0.4)' : 'rgba(255, 255, 255, 0.5)'),
                 padding: 20,
                 borderRadius: 16,
                 alignItems: 'center',
+                borderWidth: 1,
+                borderColor: selectedMuscle === muscle.name ? 'rgba(255,255,255,0.3)' : (isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0,0,0,0.1)'),
                 shadowColor: '#000',
                 shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.1,
+                shadowOpacity: 0.05,
                 shadowRadius: 4,
                 elevation: 3,
               }}
@@ -85,7 +87,7 @@ export default function MusclesScreen() {
                 color={selectedMuscle === muscle.name ? '#ffffff' : muscle.color}
               />
               <Text style={{
-                fontSize: 16,
+                fontSize: 12,
                 fontWeight: '600',
                 color: selectedMuscle === muscle.name ? '#ffffff' : textColor,
                 marginTop: 8,
@@ -100,7 +102,7 @@ export default function MusclesScreen() {
         {/* Exercises Section */}
         {selectedMuscle && (
           <View>
-            <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginBottom: 16 }}>
+            <Text style={{ fontSize: 16, fontWeight: 'bold', color: textColor, marginBottom: 16 }}>
               {MUSCLE_GROUPS.find(m => m.name === selectedMuscle)?.label} Exercises
             </Text>
 
@@ -108,7 +110,7 @@ export default function MusclesScreen() {
             {isLoading && (
               <View style={{ padding: 40, alignItems: 'center' }}>
                 <ActivityIndicator size="large" color="#6366f1" />
-                <Text style={{ fontSize: 14, color: mutedColor, marginTop: 12 }}>
+                <Text style={{ fontSize: 10, color: mutedColor, marginTop: 12 }}>
                   Loading exercises...
                 </Text>
               </View>
@@ -122,7 +124,7 @@ export default function MusclesScreen() {
                 borderRadius: 12,
                 marginBottom: 20,
               }}>
-                <Text style={{ fontSize: 14, color: '#ef4444' }}>
+                <Text style={{ fontSize: 10, color: '#ef4444' }}>
                   {error}
                 </Text>
               </View>
@@ -136,15 +138,17 @@ export default function MusclesScreen() {
                     key={exercise.id}
                     onPress={() => router.push(`/exercise/${exercise.id}` as any)}
                     style={{
-                      backgroundColor: surfaceColor,
+                      backgroundColor: isDark ? 'rgba(30, 30, 30, 0.4)' : 'rgba(255, 255, 255, 0.5)',
                       borderRadius: 16,
+                      borderWidth: 1,
+                      borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0,0,0,0.1)',
                       padding: 16,
                       flexDirection: 'row',
                       alignItems: 'center',
                       gap: 16,
                       shadowColor: '#000',
                       shadowOffset: { width: 0, height: 2 },
-                      shadowOpacity: 0.1,
+                      shadowOpacity: 0.05,
                       shadowRadius: 4,
                       elevation: 3,
                     }}
@@ -173,14 +177,14 @@ export default function MusclesScreen() {
                     {/* Exercise Info */}
                     <View style={{ flex: 1 }}>
                       <Text style={{
-                        fontSize: 16,
+                        fontSize: 12,
                         fontWeight: '600',
                         color: textColor,
                         marginBottom: 4,
                       }}>
                         {exercise.name}
                       </Text>
-                      <Text style={{ fontSize: 14, color: mutedColor, marginBottom: 4 }}>
+                      <Text style={{ fontSize: 10, color: mutedColor, marginBottom: 4 }}>
                         {exercise.target}
                       </Text>
                       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
@@ -190,7 +194,7 @@ export default function MusclesScreen() {
                           borderRadius: 6,
                           backgroundColor: '#10b981' + '20',
                         }}>
-                          <Text style={{ fontSize: 12, color: '#10b981', fontWeight: '600' }}>
+                          <Text style={{ fontSize: 10, color: '#10b981', fontWeight: '600' }}>
                             {exercise.equipment}
                           </Text>
                         </View>
@@ -206,16 +210,18 @@ export default function MusclesScreen() {
             {/* Empty State */}
             {!isLoading && !error && exercises.length === 0 && selectedMuscle && (
               <View style={{
-                backgroundColor: surfaceColor,
+                backgroundColor: isDark ? 'rgba(30, 30, 30, 0.4)' : 'rgba(255, 255, 255, 0.5)',
+                borderWidth: 1,
+                borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0,0,0,0.1)',
                 padding: 40,
                 borderRadius: 16,
                 alignItems: 'center',
               }}>
                 <Ionicons name="search" size={48} color={mutedColor} />
-                <Text style={{ fontSize: 16, color: textColor, marginTop: 12, fontWeight: '600' }}>
+                <Text style={{ fontSize: 12, color: textColor, marginTop: 12, fontWeight: '600' }}>
                   No exercises found
                 </Text>
-                <Text style={{ fontSize: 14, color: mutedColor, marginTop: 4, textAlign: 'center' }}>
+                <Text style={{ fontSize: 10, color: mutedColor, marginTop: 4, textAlign: 'center' }}>
                   Try selecting a different muscle group
                 </Text>
               </View>
@@ -224,6 +230,6 @@ export default function MusclesScreen() {
         )}
       </View>
     </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

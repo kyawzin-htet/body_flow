@@ -8,8 +8,8 @@ export default function SkillsScreen() {
   const colorScheme = useTheme();
   const isDark = colorScheme === 'dark';
 
-  const bgColor = isDark ? '#0a0e27' : '#f8f9fa';
-  const surfaceColor = isDark ? '#1a1f3a' : '#ffffff';
+  const bgColor = isDark ? '#000000' : '#f8f9fa';
+  const surfaceColor = isDark ? '#1a1a1a' : '#ffffff';
   const textColor = isDark ? '#ffffff' : '#000000';
   const mutedColor = isDark ? '#9ca3af' : '#6b7280';
 
@@ -28,11 +28,11 @@ export default function SkillsScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: bgColor }}>
+    <View style={{ flex: 1, backgroundColor: bgColor }}>
     <ScrollView style={{ flex: 1 }}>
       <View style={{ padding: 20 }}>
         
-        <Text style={{ fontSize: 16, color: mutedColor, marginBottom: 24 }}>
+        <Text style={{ fontSize: 12, color: mutedColor, marginBottom: 24 }}>
           Master advanced gymnastics movements step by step
         </Text>
 
@@ -55,7 +55,7 @@ export default function SkillsScreen() {
             {/* Category Header */}
             <View style={{ marginBottom: 16 }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                <Text style={{ fontSize: 22, fontWeight: 'bold', color: textColor }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: textColor }}>
                   {skillCategory.name}
                 </Text>
                 <View style={{
@@ -64,7 +64,7 @@ export default function SkillsScreen() {
                   paddingVertical: 6,
                   borderRadius: 12,
                 }}>
-                  <Text style={{ color: '#6366f1', fontSize: 12, fontWeight: '600' }}>
+                  <Text style={{ color: '#6366f1', fontSize: 10, fontWeight: '600' }}>
                     {skillCategory.progressions.length} levels
                   </Text>
                 </View>
@@ -84,7 +84,7 @@ export default function SkillsScreen() {
                         flexDirection: 'row',
                         alignItems: 'center',
                         padding: 16,
-                        backgroundColor: isDark ? '#0a0e27' : '#f8f9fa',
+                        backgroundColor: isDark ? '#000000' : '#f8f9fa',
                         borderRadius: 12,
                         opacity: isLocked ? 0.6 : 1,
                       }}
@@ -105,7 +105,7 @@ export default function SkillsScreen() {
                           <Ionicons name="lock-closed" size={20} color={mutedColor} />
                         ) : (
                           <Text style={{ 
-                            fontSize: 16, 
+                            fontSize: 12, 
                             fontWeight: 'bold', 
                             color: difficultyColor 
                           }}>
@@ -117,13 +117,13 @@ export default function SkillsScreen() {
                       {/* Skill Info */}
                       <View style={{ flex: 1 }}>
                         <Text style={{ 
-                          fontSize: 16, 
+                          fontSize: 12, 
                           fontWeight: '600', 
                           color: textColor 
                         }}>
                           {progression.name}
                         </Text>
-                        <Text style={{ fontSize: 14, color: mutedColor, marginTop: 2 }}>
+                        <Text style={{ fontSize: 10, color: mutedColor, marginTop: 2 }}>
                           {getDifficultyLabel(progression.difficulty)}
                         </Text>
                       </View>
@@ -169,14 +169,14 @@ export default function SkillsScreen() {
             {/* Progress Bar */}
             <View style={{ marginTop: 16, paddingTop: 16, borderTopWidth: 1, borderTopColor: mutedColor + '20' }}>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 }}>
-                <Text style={{ fontSize: 14, color: mutedColor }}>Your Progress</Text>
-                <Text style={{ fontSize: 14, fontWeight: '600', color: textColor }}>
+                <Text style={{ fontSize: 10, color: mutedColor }}>Your Progress</Text>
+                <Text style={{ fontSize: 10, fontWeight: '600', color: textColor }}>
                   1/{skillCategory.progressions.length}
                 </Text>
               </View>
               <View style={{
                 height: 8,
-                backgroundColor: isDark ? '#0a0e27' : '#e5e7eb',
+                backgroundColor: isDark ? '#000000' : '#e5e7eb',
                 borderRadius: 4,
                 overflow: 'hidden',
               }}>
@@ -201,11 +201,11 @@ export default function SkillsScreen() {
         }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
             <Ionicons name="bulb" size={24} color="#6366f1" />
-            <Text style={{ fontSize: 18, fontWeight: 'bold', color: textColor, marginLeft: 8 }}>
+            <Text style={{ fontSize: 14, fontWeight: 'bold', color: textColor, marginLeft: 8 }}>
               Training Tips
             </Text>
           </View>
-          <Text style={{ fontSize: 14, color: textColor, lineHeight: 20 }}>
+          <Text style={{ fontSize: 10, color: textColor, lineHeight: 20 }}>
             • Master each level before progressing{'\n'}
             • Practice consistently 3-4 times per week{'\n'}
             • Focus on form over repetitions{'\n'}
@@ -215,6 +215,6 @@ export default function SkillsScreen() {
         </View>
       </View>
     </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

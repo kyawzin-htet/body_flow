@@ -8,7 +8,7 @@ export default function TabLayout() {
   const insets = useSafeAreaInsets();
   
   const isDark = colorScheme === 'dark';
-  const backgroundColor = isDark ? '#0a0e27' : '#f8f9fa';
+  const backgroundColor = isDark ? '#000000' : '#f8f9fa';
   const activeColor = '#6366f1';
   const inactiveColor = isDark ? '#9ca3af' : '#6b7280';
 
@@ -18,25 +18,42 @@ export default function TabLayout() {
         tabBarActiveTintColor: activeColor,
         tabBarInactiveTintColor: inactiveColor,
         tabBarStyle: {
-          backgroundColor: isDark ? '#1a1f3a' : '#ffffff',
-          borderTopColor: isDark ? '#2d3250' : '#e5e7eb',
-          borderTopWidth: 1,
-          paddingBottom: insets.bottom + 5,
-          height: 60 + insets.bottom,
-          paddingTop: 10,  // Add some top padding to balance
+          position: 'absolute',
+          bottom: insets.bottom - 15,
+          left: 40,
+          right: 40,
+          backgroundColor: isDark ? 'rgba(26, 26, 26, 0.8)' : 'rgba(255, 255, 255, 0.8)',
+          borderRadius: 20,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
+          height: 70,
+          paddingBottom: 10,
+          paddingTop: 10,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 8 },
+          shadowOpacity: isDark ? 0.4 : 0.15,
+          shadowRadius: 16,
+          elevation: 10,
+
         },
         tabBarItemStyle: {
           justifyContent: 'center',
           alignItems: 'center',
+          paddingVertical: 5,
         },
-        tabBarShowLabel: false,
+        tabBarLabelStyle: {
+          fontSize: 10,
+          fontWeight: '600',
+          marginTop: 2,
+        },
+        tabBarShowLabel: true,
         headerStyle: {
-          backgroundColor: isDark ? '#1a1f3a' : '#ffffff',
+          backgroundColor: isDark ? 'rgba(0, 0, 0, 0.95)' : 'rgba(248, 249, 250, 0.95)',
         },
         headerTintColor: isDark ? '#ffffff' : '#000000',
         headerTitleStyle: {
           fontWeight: 'bold',
-          fontSize: 20,
+          fontSize: 16,
         },
       }}
     >
@@ -65,15 +82,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="trophy" size={size} color={color} />
           ),
-        }}
-      />
-      <Tabs.Screen
-        name="habits"
-        options={{
-          title: 'Habits',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="checkbox" size={size} color={color} />
-          ),
+          href: null,
         }}
       />
       <Tabs.Screen
@@ -86,21 +95,32 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="analytics"
-        options={{
-          title: 'Analytics',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="stats-chart" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="profile"
         options={{
           title: 'Profile',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person" size={size} color={color} />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="habits"
+        options={{
+          title: 'Habits',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="checkbox" size={size} color={color} />
+          ),
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="analytics"
+        options={{
+          title: 'Analytics',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="stats-chart" size={size} color={color} />
+          ),
+          href: null,
         }}
       />
     </Tabs>

@@ -123,8 +123,8 @@ export default function TimerScreen() {
     return `${m}:${s < 10 ? '0' : ''}${s}`;
   };
 
-  const bgColor = isDark ? '#0a0e27' : '#f8f9fa';
-  const surfaceColor = isDark ? '#1a1f3a' : '#ffffff';
+  const bgColor = isDark ? '#000000' : '#f8f9fa';
+  const surfaceColor = isDark ? '#1a1a1a' : '#ffffff';
   const textColor = isDark ? '#ffffff' : '#000000';
   const mutedColor = isDark ? '#9ca3af' : '#6b7280';
 
@@ -162,18 +162,18 @@ export default function TimerScreen() {
       {isRunning ? (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
           {/* Active Timer UI */}
-          <Text style={{ fontSize: 48, fontWeight: 'bold', color: getPhaseColor(), marginBottom: 20 }}>
+          <Text style={{ fontSize: 44, fontWeight: 'bold', color: getPhaseColor(), marginBottom: 20 }}>
             {getPhaseName()}
           </Text>
 
-          <Text style={{ fontSize: 120, fontWeight: 'bold', color: textColor, fontVariant: ['tabular-nums'] }}>
+          <Text style={{ fontSize: 116, fontWeight: 'bold', color: textColor, fontVariant: ['tabular-nums'] }}>
             {formatTime(timeLeft)}
           </Text>
 
           <View style={{ flexDirection: 'row', gap: 40, marginBottom: 60 }}>
             <View style={{ alignItems: 'center' }}>
-              <Text style={{ fontSize: 16, color: mutedColor }}>Round</Text>
-              <Text style={{ fontSize: 32, fontWeight: 'bold', color: textColor }}>{currentRound}/{rounds}</Text>
+              <Text style={{ fontSize: 12, color: mutedColor }}>Round</Text>
+              <Text style={{ fontSize: 28, fontWeight: 'bold', color: textColor }}>{currentRound}/{rounds}</Text>
             </View>
           </View>
 
@@ -216,12 +216,12 @@ export default function TimerScreen() {
             <View style={{ backgroundColor: surfaceColor, borderRadius: 20, padding: 24 }}>
               
               <View style={{ marginBottom: 24 }}>
-                <Text style={{ fontSize: 16, color: mutedColor, marginBottom: 8 }}>Work Duration</Text>
+                <Text style={{ fontSize: 12, color: mutedColor, marginBottom: 8 }}>Work Duration</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                    <TouchableOpacity onPress={() => setWorkTime(Math.max(5, workTime - 5))}>
                     <Ionicons name="remove-circle" size={32} color={mutedColor} />
                    </TouchableOpacity>
-                   <Text style={{ fontSize: 32, fontWeight: 'bold', color: textColor }}>{formatTime(workTime)}</Text>
+                   <Text style={{ fontSize: 28, fontWeight: 'bold', color: textColor }}>{formatTime(workTime)}</Text>
                    <TouchableOpacity onPress={() => setWorkTime(workTime + 5)}>
                     <Ionicons name="add-circle" size={32} color={mutedColor} />
                    </TouchableOpacity>
@@ -229,12 +229,12 @@ export default function TimerScreen() {
               </View>
 
               <View style={{ marginBottom: 24 }}>
-                <Text style={{ fontSize: 16, color: mutedColor, marginBottom: 8 }}>Rest Duration</Text>
+                <Text style={{ fontSize: 12, color: mutedColor, marginBottom: 8 }}>Rest Duration</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                    <TouchableOpacity onPress={() => setRestTime(Math.max(5, restTime - 5))}>
                     <Ionicons name="remove-circle" size={32} color={mutedColor} />
                    </TouchableOpacity>
-                   <Text style={{ fontSize: 32, fontWeight: 'bold', color: textColor }}>{formatTime(restTime)}</Text>
+                   <Text style={{ fontSize: 28, fontWeight: 'bold', color: textColor }}>{formatTime(restTime)}</Text>
                    <TouchableOpacity onPress={() => setRestTime(restTime + 5)}>
                     <Ionicons name="add-circle" size={32} color={mutedColor} />
                    </TouchableOpacity>
@@ -242,12 +242,12 @@ export default function TimerScreen() {
               </View>
 
               <View style={{ marginBottom: 24 }}>
-                <Text style={{ fontSize: 16, color: mutedColor, marginBottom: 8 }}>Rounds</Text>
+                <Text style={{ fontSize: 12, color: mutedColor, marginBottom: 8 }}>Rounds</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                    <TouchableOpacity onPress={() => setRounds(Math.max(1, rounds - 1))}>
                     <Ionicons name="remove-circle" size={32} color={mutedColor} />
                    </TouchableOpacity>
-                   <Text style={{ fontSize: 32, fontWeight: 'bold', color: textColor }}>{rounds}</Text>
+                   <Text style={{ fontSize: 28, fontWeight: 'bold', color: textColor }}>{rounds}</Text>
                    <TouchableOpacity onPress={() => setRounds(rounds + 1)}>
                     <Ionicons name="add-circle" size={32} color={mutedColor} />
                    </TouchableOpacity>
@@ -264,7 +264,7 @@ export default function TimerScreen() {
                   marginTop: 8,
                 }}
               >
-                <Text style={{ color: '#ffffff', fontSize: 20, fontWeight: 'bold' }}>
+                <Text style={{ color: '#ffffff', fontSize: 16, fontWeight: 'bold' }}>
                   Start Workout
                 </Text>
               </TouchableOpacity>
@@ -272,10 +272,10 @@ export default function TimerScreen() {
             </View>
 
             <View style={{ marginTop: 24, padding: 20, backgroundColor: surfaceColor, borderRadius: 16 }}>
-              <Text style={{ fontSize: 18, fontWeight: 'bold', color: textColor, marginBottom: 8 }}>
+              <Text style={{ fontSize: 14, fontWeight: 'bold', color: textColor, marginBottom: 8 }}>
                 Total Time
               </Text>
-              <Text style={{ fontSize: 16, color: mutedColor }}>
+              <Text style={{ fontSize: 12, color: mutedColor }}>
                 {formatTime((workTime + restTime) * rounds + prepareTime)}
               </Text>
             </View>

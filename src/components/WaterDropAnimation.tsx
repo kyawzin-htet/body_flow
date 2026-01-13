@@ -223,6 +223,6 @@ const styles = StyleSheet.create({
   },
   sparkle: {
     position: 'absolute',
-    fontSize: 24,
+    fontSize: 20,
   },
 });

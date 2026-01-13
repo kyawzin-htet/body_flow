@@ -48,8 +48,8 @@ export default function MeasurementsScreen() {
     setNewData({ weight: '', bodyFat: '', waist: '', chest: '', arms: '', legs: '' });
   };
 
-  const bgColor = isDark ? '#0a0e27' : '#f8f9fa';
-  const surfaceColor = isDark ? '#1a1f3a' : '#ffffff';
+  const bgColor = isDark ? '#000000' : '#f8f9fa';
+  const surfaceColor = isDark ? '#1a1a1a' : '#ffffff';
   const textColor = isDark ? '#ffffff' : '#000000';
   const mutedColor = isDark ? '#9ca3af' : '#6b7280';
   const chartColor = '#6366f1';
@@ -87,14 +87,14 @@ export default function MeasurementsScreen() {
             }}
           >
             <Ionicons name="add-circle" size={24} color="#ffffff" />
-            <Text style={{ color: '#ffffff', fontSize: 16, fontWeight: 'bold' }}>
+            <Text style={{ color: '#ffffff', fontSize: 12, fontWeight: 'bold' }}>
               Log New Measurement
             </Text>
           </TouchableOpacity>
 
           {/* Weight Chart */}
           <View style={{ marginBottom: 24 }}>
-            <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>
+            <Text style={{ fontSize: 16, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>
               Weight Progress
             </Text>
             <View style={{ backgroundColor: surfaceColor, borderRadius: 16, padding: 16 }}>
@@ -145,7 +145,7 @@ export default function MeasurementsScreen() {
           </View>
 
           {/* History List */}
-          <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>
+          <Text style={{ fontSize: 16, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>
             History
           </Text>
           
@@ -173,24 +173,24 @@ export default function MeasurementsScreen() {
                   <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 16 }}>
                     {item.weight && (
                       <View>
-                        <Text style={{ fontSize: 12, color: mutedColor }}>Weight</Text>
-                        <Text style={{ fontSize: 16, fontWeight: 'bold', color: textColor }}>
+                        <Text style={{ fontSize: 10, color: mutedColor }}>Weight</Text>
+                        <Text style={{ fontSize: 12, fontWeight: 'bold', color: textColor }}>
                           {item.weight} kg
                         </Text>
                       </View>
                     )}
                     {item.bodyFat && (
                       <View>
-                        <Text style={{ fontSize: 12, color: mutedColor }}>Body Fat</Text>
-                        <Text style={{ fontSize: 16, fontWeight: 'bold', color: textColor }}>
+                        <Text style={{ fontSize: 10, color: mutedColor }}>Body Fat</Text>
+                        <Text style={{ fontSize: 12, fontWeight: 'bold', color: textColor }}>
                           {item.bodyFat}%
                         </Text>
                       </View>
                     )}
                     {item.waist && (
                       <View>
-                        <Text style={{ fontSize: 12, color: mutedColor }}>Waist</Text>
-                        <Text style={{ fontSize: 16, fontWeight: 'bold', color: textColor }}>
+                        <Text style={{ fontSize: 10, color: mutedColor }}>Waist</Text>
+                        <Text style={{ fontSize: 12, fontWeight: 'bold', color: textColor }}>
                           {item.waist} cm
                         </Text>
                       </View>
@@ -214,7 +214,7 @@ export default function MeasurementsScreen() {
           <View style={{ backgroundColor: surfaceColor, borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 24, height: '80%' }}>
             
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-              <Text style={{ fontSize: 24, fontWeight: 'bold', color: textColor }}>Log Measurement</Text>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor }}>Log Measurement</Text>
               <TouchableOpacity onPress={() => setShowAddModal(false)}>
                 <Ionicons name="close-circle" size={32} color={mutedColor} />
               </TouchableOpacity>
@@ -230,7 +230,7 @@ export default function MeasurementsScreen() {
                     keyboardType="numeric"
                     placeholder="0.0"
                     placeholderTextColor={mutedColor}
-                    style={{ backgroundColor: bgColor, padding: 16, borderRadius: 12, color: textColor, fontSize: 18 }}
+                    style={{ backgroundColor: bgColor, padding: 16, borderRadius: 12, color: textColor, fontSize: 14 }}
                   />
                 </View>
 
@@ -242,7 +242,7 @@ export default function MeasurementsScreen() {
                     keyboardType="numeric"
                     placeholder="0.0%"
                     placeholderTextColor={mutedColor}
-                    style={{ backgroundColor: bgColor, padding: 16, borderRadius: 12, color: textColor, fontSize: 18 }}
+                    style={{ backgroundColor: bgColor, padding: 16, borderRadius: 12, color: textColor, fontSize: 14 }}
                   />
                 </View>
 
@@ -253,7 +253,7 @@ export default function MeasurementsScreen() {
                       value={newData.waist}
                       onChangeText={t => setNewData({...newData, waist: t})}
                       keyboardType="numeric"
-                      style={{ backgroundColor: bgColor, padding: 16, borderRadius: 12, color: textColor, fontSize: 16 }}
+                      style={{ backgroundColor: bgColor, padding: 16, borderRadius: 12, color: textColor, fontSize: 12 }}
                     />
                   </View>
                   <View style={{ flex: 1 }}>
@@ -262,7 +262,7 @@ export default function MeasurementsScreen() {
                       value={newData.chest}
                       onChangeText={t => setNewData({...newData, chest: t})}
                       keyboardType="numeric"
-                      style={{ backgroundColor: bgColor, padding: 16, borderRadius: 12, color: textColor, fontSize: 16 }}
+                      style={{ backgroundColor: bgColor, padding: 16, borderRadius: 12, color: textColor, fontSize: 12 }}
                     />
                   </View>
                 </View>
@@ -274,7 +274,7 @@ export default function MeasurementsScreen() {
                       value={newData.arms}
                       onChangeText={t => setNewData({...newData, arms: t})}
                       keyboardType="numeric"
-                      style={{ backgroundColor: bgColor, padding: 16, borderRadius: 12, color: textColor, fontSize: 16 }}
+                      style={{ backgroundColor: bgColor, padding: 16, borderRadius: 12, color: textColor, fontSize: 12 }}
                     />
                   </View>
                   <View style={{ flex: 1 }}>
@@ -283,7 +283,7 @@ export default function MeasurementsScreen() {
                       value={newData.legs}
                       onChangeText={t => setNewData({...newData, legs: t})}
                       keyboardType="numeric"
-                      style={{ backgroundColor: bgColor, padding: 16, borderRadius: 12, color: textColor, fontSize: 16 }}
+                      style={{ backgroundColor: bgColor, padding: 16, borderRadius: 12, color: textColor, fontSize: 12 }}
                     />
                   </View>
                 </View>
@@ -298,7 +298,7 @@ export default function MeasurementsScreen() {
                     marginTop: 24,
                   }}
                 >
-                  <Text style={{ color: '#ffffff', fontSize: 18, fontWeight: 'bold' }}>Save Entry</Text>
+                  <Text style={{ color: '#ffffff', fontSize: 14, fontWeight: 'bold' }}>Save Entry</Text>
                 </TouchableOpacity>
               </View>
             </ScrollView>
