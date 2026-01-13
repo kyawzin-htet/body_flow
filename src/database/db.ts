@@ -176,6 +176,23 @@ const createTables = async () => {
     );
   `);
 
+  // Hydration settings table
+  await db.execAsync(`
+    CREATE TABLE IF NOT EXISTS hydration_settings (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER UNIQUE,
+      daily_goal_ml INTEGER DEFAULT 2000,
+      notification_enabled INTEGER DEFAULT 1,
+      notification_interval_minutes INTEGER DEFAULT 60,
+      notification_start_hour INTEGER DEFAULT 8,
+      notification_end_hour INTEGER DEFAULT 22,
+      last_notification_sent DATETIME,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id)
+    );
+  `);
+
   // Body measurements table
   await db.execAsync(`
     CREATE TABLE IF NOT EXISTS body_measurements (
@@ -201,9 +218,45 @@ const createTables = async () => {
     CREATE INDEX IF NOT EXISTS idx_recovery_logs_user_date ON recovery_logs(user_id, date);
     CREATE INDEX IF NOT EXISTS idx_workouts_user_date ON workouts(user_id, date);
     CREATE INDEX IF NOT EXISTS idx_exercises_category ON exercises(category);
+    CREATE INDEX IF NOT EXISTS idx_hydration_logs_user_date ON hydration_logs(user_id, date);
   `);
 
+  // Run migrations to ensure all tables exist
+  await runMigrations();
+
   console.log('✅ All tables created successfully');
+};
+
+/**
+ * Run database migrations
+ */
+const runMigrations = async () => {
+  if (!db) throw new Error('Database not initialized');
+
+  // Check if hydration_settings table exists
+  const tableCheck = await db.getFirstAsync<{ name: string }>(
+    `SELECT name FROM sqlite_master WHERE type='table' AND name='hydration_settings'`
+  );
+
+  if (!tableCheck) {
+    console.log('🔄 Running migration: Creating hydration_settings table');
+    await db.execAsync(`
+      CREATE TABLE IF NOT EXISTS hydration_settings (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER UNIQUE,
+        daily_goal_ml INTEGER DEFAULT 2000,
+        notification_enabled INTEGER DEFAULT 1,
+        notification_interval_minutes INTEGER DEFAULT 60,
+        notification_start_hour INTEGER DEFAULT 8,
+        notification_end_hour INTEGER DEFAULT 22,
+        last_notification_sent DATETIME,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+      );
+    `);
+    console.log('✅ Migration completed: hydration_settings table created');
+  }
 };
 
 /**
@@ -233,6 +286,7 @@ export const resetDatabase = async () => {
     'achievements',
     'workouts',
     'hydration_logs',
+    'hydration_settings',
     'body_measurements',
   ];
 

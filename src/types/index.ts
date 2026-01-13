@@ -166,6 +166,19 @@ export interface HydrationLog {
   createdAt: string;
 }
 
+export interface HydrationSettings {
+  id: number;
+  userId: number;
+  dailyGoalMl: number;
+  notificationEnabled: boolean;
+  notificationIntervalMinutes: number;
+  notificationStartHour: number;
+  notificationEndHour: number;
+  lastNotificationSent?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // Body Measurement Types
 export interface BodyMeasurement {
   id: number;
