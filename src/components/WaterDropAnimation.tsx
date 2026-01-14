@@ -86,7 +86,7 @@ export const WaterDropAnimation: React.FC<WaterDropAnimationProps> = ({
           <Path
             d="M50 10 C30 40, 10 60, 10 80 C10 95, 25 110, 50 110 C75 110, 90 95, 90 80 C90 60, 70 40, 50 10 Z"
             fill="#E0F7FA"
-            stroke="#4FC3F7"
+            stroke="#6366f1"
             strokeWidth="2"
           />
         </Svg>

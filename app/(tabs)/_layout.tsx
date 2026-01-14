@@ -1,53 +1,16 @@
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../../src/hooks/useTheme';
+import CustomTabBar from '../../src/components/CustomTabBar';
 
 export default function TabLayout() {
   const colorScheme = useTheme();
-  const insets = useSafeAreaInsets();
-  
   const isDark = colorScheme === 'dark';
-  const backgroundColor = isDark ? '#000000' : '#f8f9fa';
-  const activeColor = '#6366f1';
-  const inactiveColor = isDark ? '#9ca3af' : '#6b7280';
 
   return (
     <Tabs
+      tabBar={(props) => <CustomTabBar {...props} />}
       screenOptions={{
-        tabBarActiveTintColor: activeColor,
-        tabBarInactiveTintColor: inactiveColor,
-        tabBarStyle: {
-          position: 'absolute',
-          left: '10%', // 10% margin on left
-          right: '10%', // 10% margin on right - this centers it
-          width: '80%', // Takes 80% of screen width
-          backgroundColor: isDark ? 'rgba(26, 26, 26, 0.8)' : 'rgba(255, 255, 255, 0.8)',
-          borderRadius: 20,
-          borderWidth: 1,
-          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
-          height: 70,
-          paddingBottom: 10,
-          paddingTop: 10,
-          paddingHorizontal: 10,
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 8 },
-          shadowOpacity: isDark ? 0.4 : 0.15,
-          shadowRadius: 16,
-          elevation: 10,
-        },
-        tabBarItemStyle: {
-          justifyContent: 'center',
-          alignItems: 'center',
-          paddingVertical: 5,
-          flex: 1,
-        },
-        tabBarLabelStyle: {
-          fontSize: 10,
-          fontWeight: '600',
-          marginTop: 2,
-        },
-        tabBarShowLabel: true,
         headerStyle: {
           backgroundColor: isDark ? 'rgba(0, 0, 0, 0.95)' : 'rgba(248, 249, 250, 0.95)',
         },
@@ -56,6 +19,7 @@ export default function TabLayout() {
           fontWeight: 'bold',
           fontSize: 16,
         },
+        tabBarShowLabel: true,
       }}
     >
       <Tabs.Screen

@@ -181,7 +181,7 @@ const loadCoachData = async () => {
             shadowRadius: 4,
             elevation: 3,
           }}>
-            <Ionicons name="checkbox" size={24} color="#10b981" />
+            <Ionicons name="checkbox" size={24} color="#6366f1" />
             <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginTop: 8 }}>
               {completedToday}/{totalHabits}
             </Text>
@@ -192,7 +192,7 @@ const loadCoachData = async () => {
         {/* Hydration Tracker */}
         <View style={{ marginBottom: 24 }}>
           <View style={{ 
-            backgroundColor: '#3b82f6' + '20',
+            backgroundColor: '#6366f1' + '20',
             padding: 20, 
             borderRadius: 20,
           borderWidth: 1,
@@ -209,7 +209,7 @@ const loadCoachData = async () => {
 
             {/* Progress Percentage */}
             <View style={{ alignItems: 'center', marginBottom: 16 }}>
-              <Text style={{ fontSize: 44, fontWeight: 'bold', color: '#3b82f6' }}>
+              <Text style={{ fontSize: 44, fontWeight: 'bold', color: '#6366f1' }}>
                 {Math.round(((hydrationLog?.amountMl || 0) / (hydrationLog?.goalMl || 2000)) * 100)}%
               </Text>
               <Text style={{ fontSize: 10, color: mutedColor }}>
@@ -230,7 +230,7 @@ const loadCoachData = async () => {
               <View style={{
                 width: `${Math.min(((hydrationLog?.amountMl || 0) / (hydrationLog?.goalMl || 2000)) * 100, 100)}%`,
                 height: '100%',
-                backgroundColor: '#3b82f6',
+                backgroundColor: '#6366f1',
               }} />
             </View>
 
@@ -264,7 +264,7 @@ const loadCoachData = async () => {
                 onPress={() => user && logWater(user.id, 250)}
                 style={{
                   flex: 1,
-                  backgroundColor: '#3b82f6',
+                  backgroundColor: '#6366f1',
                   paddingVertical: 12,
                   borderRadius: 12,
           borderWidth: 1,
@@ -281,11 +281,9 @@ const loadCoachData = async () => {
                   backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
                   paddingVertical: 12,
                   borderRadius: 12,
-          borderWidth: 1,
-          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
-                  alignItems: 'center',
                   borderWidth: 1,
-                  borderColor: '#3b82f6',
+                  borderColor: '#6366f1',
+                  alignItems: 'center',
                 }}
               >
                 <Text style={{ color: textColor, fontWeight: 'bold' }}>+0.50L</Text>
@@ -428,7 +426,7 @@ const loadCoachData = async () => {
                   <Ionicons
                     name={isCompleted ? 'checkmark-circle' : 'ellipse-outline'}
                     size={28}
-                    color={isCompleted ? '#10b981' : mutedColor}
+                    color={isCompleted ? '#6366f1' : mutedColor}
                   />
                 </TouchableOpacity>
               );

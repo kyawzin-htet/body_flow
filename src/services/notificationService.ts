@@ -123,7 +123,16 @@ export class NotificationService {
         if (triggerDate > new Date()) {
           const secondsUntilTrigger = Math.floor((triggerDate.getTime() - Date.now()) / 1000);
           
-          console.log(`Scheduling notification for: ${triggerDate.toLocaleString()}`);
+          // Use ISO string or en-US locale to avoid Buddhist Era calendar
+          const formattedDate = triggerDate.toLocaleString('en-US', { 
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+          });
+          console.log(`Scheduling notification for: ${formattedDate} (in ${secondsUntilTrigger}s)`);
           
           const id = await Notifications.scheduleNotificationAsync({
             content: {

@@ -58,7 +58,7 @@ export function CongratulationsModal({
   const surfaceColor = isDark ? '#1a1a1a' : '#ffffff';
   const textColor = isDark ? '#ffffff' : '#000000';
   const mutedColor = isDark ? '#9ca3af' : '#6b7280';
-  const accentColor = '#4FC3F7';
+  const accentColor = '#6366f1';
 
   return (
     <Modal
@@ -86,7 +86,7 @@ export function CongratulationsModal({
         }}>
           {/* Trophy Icon with Rotation */}
           <Animated.View style={{ transform: [{ rotate }] }}>
-            <Ionicons name="trophy" size={80} color="#FFD700" />
+            <Ionicons name="trophy" size={80} color="#6366f1" />
           </Animated.View>
 
           {/* Congratulations Text */}

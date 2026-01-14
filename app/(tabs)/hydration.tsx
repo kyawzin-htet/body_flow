@@ -123,12 +123,15 @@ export default function HydrationScreen() {
   const surfaceColor = isDark ? '#1a1a1a' : '#ffffff';
   const textColor = isDark ? '#ffffff' : '#000000';
   const mutedColor = isDark ? '#9ca3af' : '#6b7280';
-  const accentColor = '#4FC3F7';
+  const accentColor = '#6366f1';
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={() => setShowSettings(true)}>
+        <TouchableOpacity 
+          onPress={() => setShowSettings(true)}
+          style={{ paddingRight: 10 }}
+        >
           <Ionicons name="settings-outline" size={24} color={textColor} />
         </TouchableOpacity>
       ),
@@ -181,11 +184,11 @@ export default function HydrationScreen() {
                   style={{
                     flex: 1,
                     minWidth: 80,
-                    backgroundColor: 'rgba(79, 195, 247, 0.2)',
+                    backgroundColor: 'rgba(99, 102, 241, 0.15)',
                     padding: 8,
                     borderRadius: 16,
                     borderWidth: 1,
-                    borderColor: 'rgba(79, 195, 247, 0.3)',
+                    borderColor: 'rgba(99, 102, 241, 0.15)',
 
                     alignItems: 'center',
                   }}
@@ -201,7 +204,7 @@ export default function HydrationScreen() {
                 style={{
                   flex: 1,
                   minWidth: 80,
-                  backgroundColor: isDark ? 'rgba(30, 30, 30, 0.4)' : 'rgba(255, 255, 255, 0.5)',
+                  backgroundColor: isDark ? 'rgba(26, 26, 26, 0.8)' : 'rgba(255, 255, 255, 0.8)',
                   borderWidth: 1,
                   borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
                   padding: 8,
@@ -224,7 +227,7 @@ export default function HydrationScreen() {
                 Today's Progress
               </Text>
               <View style={{ 
-                backgroundColor: isDark ? 'rgba(30, 30, 30, 0.4)' : 'rgba(255, 255, 255, 0.5)',
+                backgroundColor: isDark ? 'rgba(26, 26, 26, 0.8)' : 'rgba(255, 255, 255, 0.8)',
                 borderWidth: 1,
                 borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.5)',
                 padding: 12, 
@@ -257,7 +260,7 @@ export default function HydrationScreen() {
       >
         <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' }}>
           <View style={{ 
-            backgroundColor: isDark ? 'rgba(30, 30, 30, 0.9)' : 'rgba(255, 255, 255, 0.95)', 
+            backgroundColor: isDark ? 'rgba(26, 26, 26, 0.8)' : 'rgba(255, 255, 255, 0.8)', 
             borderTopLeftRadius: 24, 
             borderTopRightRadius: 24, 
             padding: 24,
@@ -315,7 +318,7 @@ export default function HydrationScreen() {
       >
         <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' }}>
           <View style={{ 
-            backgroundColor: isDark ? 'rgba(30, 30, 30, 0.9)' : 'rgba(255, 255, 255, 0.95)', 
+            backgroundColor: isDark ? 'rgba(26, 26, 26, 0.8)' : 'rgba(255, 255, 255, 0.8)', 
             borderTopLeftRadius: 24, 
             borderTopRightRadius: 24, 
             padding: 24, 
