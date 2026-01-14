@@ -14,6 +14,7 @@ interface HabitState {
   updateHabit: (habitId: number, updates: Partial<Habit>) => Promise<void>;
   deleteHabit: (habitId: number) => Promise<void>;
   toggleHabitActive: (habitId: number) => Promise<void>;
+  resetAllData: () => void;
 }
 
 export const useHabitStore = create<HabitState>((set, get) => ({
@@ -124,5 +125,10 @@ export const useHabitStore = create<HabitState>((set, get) => ({
     if (habit) {
       await get().updateHabit(habitId, { active: !habit.active });
     }
+  },
+
+  resetAllData: () => {
+    // Immediately clear state for instant UI update
+    set({ habits: [], isLoading: false, error: null });
   },
 }));

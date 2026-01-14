@@ -1,12 +1,12 @@
 import { View, Text, ScrollView, useColorScheme, ActivityIndicator } from 'react-native';
 import { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import { useUserStore } from '../../src/store/userStore';
-import { AnalyticsService } from '../../src/services/analyticsService';
-import { useTheme } from '../../src/hooks/useTheme';
-import { ProgressMetrics, HydrationLog } from '../../src/types';
-import { MUSCLE_GROUPS } from '../../src/utils/constants';
-import { HydrationRepository } from '../../src/database/repositories/hydrationRepository';
+import { useUserStore } from '../src/store/userStore';
+import { AnalyticsService } from '../src/services/analyticsService';
+import { useTheme } from '../src/hooks/useTheme';
+import { ProgressMetrics, HydrationLog } from '../src/types';
+import { MUSCLE_GROUPS } from '../src/utils/constants';
+import { HydrationRepository } from '../src/database/repositories/hydrationRepository';
 
 export default function AnalyticsScreen() {
   const colorScheme = useTheme();

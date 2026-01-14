@@ -271,6 +271,30 @@ export const closeDatabase = async () => {
 };
 
 /**
+ * Clear all user data from the database (preserves structure)
+ */
+export const clearAllUserData = async () => {
+  if (!db) throw new Error('Database not initialized');
+
+  const tables = [
+    'habit_logs',
+    'habits',
+    'recovery_logs',
+    'achievements',
+    'workouts',
+    'hydration_logs',
+    'hydration_settings',
+    'body_measurements',
+  ];
+
+  for (const table of tables) {
+    await db.execAsync(`DELETE FROM ${table};`);
+  }
+
+  console.log('✅ All user data cleared successfully');
+};
+
+/**
  * Reset the database (for development/testing)
  */
 export const resetDatabase = async () => {

@@ -1,8 +1,8 @@
 import { View, Text, ScrollView, TouchableOpacity, useColorScheme } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme } from '../../src/hooks/useTheme';
-import { GYMNASTICS_SKILLS } from '../../src/utils/constants';
+import { useTheme } from '../src/hooks/useTheme';
+import { GYMNASTICS_SKILLS } from '../src/utils/constants';
 
 export default function SkillsScreen() {
   const colorScheme = useTheme();

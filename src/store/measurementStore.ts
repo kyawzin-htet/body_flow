@@ -11,6 +11,7 @@ interface MeasurementState {
   // Actions
   loadHistory: (userId: number) => Promise<void>;
   addMeasurement: (measurementData: Omit<BodyMeasurement, 'id' | 'createdAt'>) => Promise<void>;
+  resetAllData: () => void;
 }
 
 export const useMeasurementStore = create<MeasurementState>((set, get) => ({
@@ -45,5 +46,10 @@ export const useMeasurementStore = create<MeasurementState>((set, get) => ({
         isLoading: false 
       });
     }
+  },
+
+  resetAllData: () => {
+    // Immediately clear state for instant UI update
+    set({ history: [], latest: null, isLoading: false, error: null });
   },
 }));

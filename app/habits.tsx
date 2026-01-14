@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, TouchableOpacity, useColorScheme, TextInput, Modal, LayoutAnimation, Platform, UIManager } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Stack } from 'expo-router';
 
 if (Platform.OS === 'android') {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -8,10 +9,10 @@ if (Platform.OS === 'android') {
 }
 import { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import { useUserStore } from '../../src/store/userStore';
-import { useHabitStore } from '../../src/store/habitStore';
-import { useTheme } from '../../src/hooks/useTheme';
-import CreateHabitModal from '../../src/components/CreateHabitModal';
+import { useUserStore } from '../src/store/userStore';
+import { useHabitStore } from '../src/store/habitStore';
+import { useTheme } from '../src/hooks/useTheme';
+import CreateHabitModal from '../src/components/CreateHabitModal';
 
 export default function HabitsScreen() {
   const colorScheme = useTheme();
@@ -76,6 +77,15 @@ export default function HabitsScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: bgColor }}>
+      <Stack.Screen 
+        options={{
+          headerTitle: 'Training Habits',
+          headerStyle: { backgroundColor: surfaceColor },
+          headerTintColor: textColor,
+          headerShadowVisible: false,
+        }}
+      />
+
       {/* <SafeAreaView style={{ flex: 1, backgroundColor: bgColor }}> */}
     <ScrollView style={{ flex: 1 }}>
         <View style={{ padding: 20 }}>

@@ -129,7 +129,7 @@ const loadCoachData = async () => {
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: bgColor }}>
-      <View style={{ padding: 20 }}>
+      <View style={{ padding: 20, paddingBottom: 80 }}>
         {/* Welcome Section */}
         {showWelcome && (
           <View style={{ marginBottom: 24 }}>
@@ -352,9 +352,33 @@ const loadCoachData = async () => {
 
         {/* Today's Habits */}
         <View style={{ marginBottom: 24 }}>
-          <Text style={{ fontSize: 16, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>
-            Today's Training
-          </Text>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+            <Text style={{ fontSize: 16, fontWeight: 'bold', color: textColor }}>
+              Today's Training
+            </Text>
+            {totalHabits > 0 && (
+              <Link href="/habits" asChild>
+                <TouchableOpacity
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 4,
+                    paddingHorizontal: 12,
+                    paddingVertical: 6,
+                    borderRadius: 8,
+                    backgroundColor: '#6366f1' + '20',
+                    borderWidth: 1,
+                    borderColor: '#6366f1',
+                  }}
+                >
+                  <Ionicons name="add" size={16} color="#6366f1" />
+                  <Text style={{ color: '#6366f1', fontSize: 12, fontWeight: '600' }}>
+                    Add
+                  </Text>
+                </TouchableOpacity>
+              </Link>
+            )}
+          </View>
           
           {totalHabits === 0 ? (
             <View style={{ 
@@ -583,6 +607,43 @@ const loadCoachData = async () => {
                   </Text>
                   <Text style={{ fontSize: 10, color: mutedColor }}>
                     Track your progress
+                  </Text>
+                </View>
+                <Ionicons name="chevron-forward" size={20} color={mutedColor} />
+              </TouchableOpacity>
+            </Link>
+
+            <Link href="/measurements" asChild>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
+                  padding: 16,
+                  borderRadius: 16,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: 12,
+                }}
+              >
+                <View style={{ 
+                  width: 48, 
+                  height: 48, 
+                  borderRadius: 12,
+          borderWidth: 1,
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)", 
+                  backgroundColor: '#8b5cf6', 
+                  justifyContent: 'center', 
+                  alignItems: 'center' 
+                }}>
+                  <Ionicons name="scale" size={24} color="#ffffff" />
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontSize: 12, fontWeight: '600', color: textColor }}>
+                    Body Measurements
+                  </Text>
+                  <Text style={{ fontSize: 10, color: mutedColor }}>
+                    Track weight and body metrics
                   </Text>
                 </View>
                 <Ionicons name="chevron-forward" size={20} color={mutedColor} />

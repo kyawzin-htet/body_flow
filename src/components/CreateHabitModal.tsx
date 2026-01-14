@@ -66,11 +66,13 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
         justifyContent: 'flex-end',
       }}>
         <View style={{
-          backgroundColor: surfaceColor,
+          backgroundColor: isDark ? 'rgba(26, 26, 26, 0.8)' : 'rgba(255, 255, 255, 0.8)',
           borderTopLeftRadius: 24,
           borderTopRightRadius: 24,
           padding: 24,
           maxHeight: '90%',
+          borderWidth: 1,
+          borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.5)',
         }}>
           {/* Header */}
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
@@ -92,6 +94,8 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
                   backgroundColor: bgInput,
                   padding: 16,
                   borderRadius: 12,
+                  borderWidth: 1,
+                  borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
                   color: textColor,
                   fontSize: 12,
                 }}
@@ -112,6 +116,8 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
                     flex: 1,
                     padding: 16,
                     borderRadius: 12,
+                    borderWidth: 1,
+                    borderColor: type === 'reps' ? '#6366f1' : (isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'),
                     backgroundColor: type === 'reps' ? '#6366f1' : bgInput,
                     alignItems: 'center',
                   }}
@@ -126,6 +132,8 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
                     flex: 1,
                     padding: 16,
                     borderRadius: 12,
+                    borderWidth: 1,
+                    borderColor: type === 'time' ? '#6366f1' : (isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'),
                     backgroundColor: type === 'time' ? '#6366f1' : bgInput,
                     alignItems: 'center',
                   }}
@@ -145,6 +153,8 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
                   backgroundColor: bgInput,
                   padding: 16,
                   borderRadius: 12,
+                  borderWidth: 1,
+                  borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
                   color: textColor,
                   fontSize: 12,
                 }}
@@ -165,6 +175,8 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
                     backgroundColor: bgInput,
                     padding: 16,
                     borderRadius: 12,
+                    borderWidth: 1,
+                    borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
                     color: textColor,
                     fontSize: 12,
                   }}
@@ -183,6 +195,8 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
                     backgroundColor: bgInput,
                     padding: 16,
                     borderRadius: 12,
+                    borderWidth: 1,
+                    borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
                     color: textColor,
                     fontSize: 12,
                   }}
@@ -205,6 +219,8 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
                     flex: 1,
                     padding: 16,
                     borderRadius: 12,
+                    borderWidth: 1,
+                    borderColor: frequency === 'daily' ? '#6366f1' : (isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'),
                     backgroundColor: frequency === 'daily' ? '#6366f1' : bgInput,
                     alignItems: 'center',
                   }}
@@ -219,6 +235,8 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
                     flex: 1,
                     padding: 16,
                     borderRadius: 12,
+                    borderWidth: 1,
+                    borderColor: frequency === 'weekly' ? '#6366f1' : (isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'),
                     backgroundColor: frequency === 'weekly' ? '#6366f1' : bgInput,
                     alignItems: 'center',
                   }}
@@ -238,6 +256,8 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
                   flex: 1,
                   padding: 16,
                   borderRadius: 12,
+                  borderWidth: 1,
+                  borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
                   backgroundColor: mutedColor + '20',
                   alignItems: 'center',
                 }}
@@ -254,6 +274,8 @@ export default function CreateHabitModal({ visible, onClose, onCreate }: CreateH
                   flex: 1,
                   padding: 16,
                   borderRadius: 12,
+                  borderWidth: 1,
+                  borderColor: name.trim() ? '#6366f1' : (isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'),
                   backgroundColor: name.trim() ? '#6366f1' : mutedColor + '40',
                   alignItems: 'center',
                 }}

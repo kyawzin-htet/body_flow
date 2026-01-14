@@ -16,6 +16,7 @@ interface HydrationState {
   logWater: (userId: number, amountMl: number) => Promise<void>;
   updateSettings: (userId: number, settings: Partial<HydrationSettings>) => Promise<void>;
   initializeForUser: (userId: number) => Promise<void>;
+  resetAllData: () => Promise<void>;
   
   // Helpers
   getProgress: () => number;
@@ -127,6 +128,18 @@ export const useHydrationStore = create<HydrationState>((set, get) => ({
         error: error instanceof Error ? error.message : 'Failed to initialize',
         isLoading: false 
       });
+    }
+  },
+
+  resetAllData: async () => {
+    // Immediately clear state for instant UI update
+    set({ todayLog: null, settings: null, isLoading: false, error: null });
+    
+    // Cancel any scheduled notifications
+    try {
+      await NotificationService.cancelHydrationNotifications();
+    } catch (error) {
+      console.error('Error canceling notifications:', error);
     }
   },
 

@@ -5,6 +5,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { useUserStore } from '../../src/store/userStore';
 import { useSettingsStore } from '../../src/store/settingsStore';
 import { useHabitStore } from '../../src/store/habitStore';
+import { useHydrationStore } from '../../src/store/hydrationStore';
+import { useMeasurementStore } from '../../src/store/measurementStore';
+import { clearAllUserData } from '../../src/database/db';
 import { AnalyticsService } from '../../src/services/analyticsService';
 import { useTheme } from '../../src/hooks/useTheme';
 import { SKILL_LEVELS, GOALS, MUSCLE_GROUPS } from '../../src/utils/constants';
@@ -22,6 +25,9 @@ export default function ProfileScreen() {
   const toggleSound = useSettingsStore((state) => state.toggleSound);
   const setTheme = useSettingsStore((state) => state.setTheme);
   const habits = useHabitStore((state) => state.habits);
+  const resetHabits = useHabitStore((state) => state.resetAllData);
+  const resetHydration = useHydrationStore((state) => state.resetAllData);
+  const resetMeasurements = useMeasurementStore((state) => state.resetAllData);
 
   const [showEditModal, setShowEditModal] = useState(false);
   const [showThemeModal, setShowThemeModal] = useState(false);
@@ -123,8 +129,23 @@ export default function ProfileScreen() {
           text: 'Reset',
           style: 'destructive',
           onPress: async () => {
-            // Add reset functionality here if needed
-            Alert.alert('Info', 'Data reset functionality would go here');
+            try {
+              // Immediately clear all store states for instant UI update
+              resetHabits();
+              await resetHydration();
+              resetMeasurements();
+              
+              // Clear database
+              await clearAllUserData();
+              
+              // Reset metrics
+              setMetrics(null);
+              
+              Alert.alert('Success', 'All data has been reset successfully');
+            } catch (error) {
+              console.error('Error resetting data:', error);
+              Alert.alert('Error', 'Failed to reset data. Please try again.');
+            }
           },
         },
       ]
@@ -146,7 +167,7 @@ export default function ProfileScreen() {
   return (
     <View style={{ flex: 1, backgroundColor: bgColor }}>
       <ScrollView style={{ flex: 1 }}>
-        <View style={{ padding: 20 }}>
+        <View style={{ padding: 20, paddingBottom: 80 }}>
           {/* Profile Header */}
           <View style={{
             backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
