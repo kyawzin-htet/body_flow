@@ -19,9 +19,9 @@ export default function TabLayout() {
         tabBarInactiveTintColor: inactiveColor,
         tabBarStyle: {
           position: 'absolute',
-          bottom: insets.bottom - 15,
-          left: 40,
-          right: 40,
+          left: '10%', // 10% margin on left
+          right: '10%', // 10% margin on right - this centers it
+          width: '80%', // Takes 80% of screen width
           backgroundColor: isDark ? 'rgba(26, 26, 26, 0.8)' : 'rgba(255, 255, 255, 0.8)',
           borderRadius: 20,
           borderWidth: 1,
@@ -29,17 +29,18 @@ export default function TabLayout() {
           height: 70,
           paddingBottom: 10,
           paddingTop: 10,
+          paddingHorizontal: 10,
           shadowColor: '#000',
           shadowOffset: { width: 0, height: 8 },
           shadowOpacity: isDark ? 0.4 : 0.15,
           shadowRadius: 16,
           elevation: 10,
-
         },
         tabBarItemStyle: {
           justifyContent: 'center',
           alignItems: 'center',
           paddingVertical: 5,
+          flex: 1,
         },
         tabBarLabelStyle: {
           fontSize: 10,

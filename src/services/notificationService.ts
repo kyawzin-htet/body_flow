@@ -105,15 +105,25 @@ export class NotificationService {
     
     for (let day = 0; day < 7; day++) {
       for (let i = 0; i < notificationsPerDay; i++) {
+        // Create base date at start hour
         const triggerDate = new Date();
         triggerDate.setDate(triggerDate.getDate() + day);
-        triggerDate.setHours(startHour);
-        triggerDate.setMinutes(i * intervalMinutes);
-        triggerDate.setSeconds(0);
+        triggerDate.setHours(startHour, 0, 0, 0); // Set to start hour with 0 minutes/seconds
+        
+        // Add the interval minutes properly using setTime to avoid overflow issues
+        triggerDate.setTime(triggerDate.getTime() + (i * intervalMinutes * 60 * 1000));
+        
+        // Check if notification time is within active hours
+        const triggerHour = triggerDate.getHours();
+        if (triggerHour >= endHour) {
+          continue; // Skip notifications outside active hours
+        }
 
         // Only schedule if in the future
         if (triggerDate > new Date()) {
           const secondsUntilTrigger = Math.floor((triggerDate.getTime() - Date.now()) / 1000);
+          
+          console.log(`Scheduling notification for: ${triggerDate.toLocaleString()}`);
           
           const id = await Notifications.scheduleNotificationAsync({
             content: {
@@ -122,9 +132,9 @@ export class NotificationService {
               data: { type: 'hydration' },
               sound: 'default',
             },
-            trigger: {
-              type: 'timeInterval' as const,
-              seconds: secondsUntilTrigger,
+            trigger: { 
+              type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+              seconds: secondsUntilTrigger 
             },
           });
           notifications.push(id);
