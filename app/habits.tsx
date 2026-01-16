@@ -121,13 +121,40 @@ export default function HabitsScreen() {
             </View>
             <View style={{ alignItems: 'flex-end' }}>
               <Text style={{ fontSize: 10, color: mutedColor }}>Completed</Text>
-              <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#10b981', marginTop: 4 }}>
+              <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#6366f1', marginTop: 4 }}>
                 {habits.filter(h => h.todayLog?.completed).length}/{habits.length}
               </Text>
             </View>
           </View>
 
           {/* Habits List */}
+          <View style={{ marginBottom: 16 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+              <Text style={{ fontSize: 16, fontWeight: 'bold', color: textColor }}>
+                Your Habits
+              </Text>
+              <TouchableOpacity
+                onPress={() => setShowCreateModal(true)}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: 4,
+                  paddingHorizontal: 12,
+                  paddingVertical: 6,
+                  borderRadius: 8,
+                  backgroundColor: '#6366f1' + '20',
+                  borderWidth: 1,
+                  borderColor: '#6366f1',
+                }}
+              >
+                <Ionicons name="add" size={16} color="#6366f1" />
+                <Text style={{ color: '#6366f1', fontSize: 12, fontWeight: '600' }}>
+                  Create
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
           {habits.length === 0 ? (
             <View style={{
               backgroundColor: isDark ? "rgba(26, 26, 26, 0.7)" : "rgba(255, 255, 255, 0.7)",
@@ -144,22 +171,6 @@ export default function HabitsScreen() {
               <Text style={{ fontSize: 10, color: mutedColor, marginTop: 8, textAlign: 'center' }}>
                 Create your first training habit to get started
               </Text>
-              <TouchableOpacity
-                onPress={() => setShowCreateModal(true)}
-                style={{
-                  marginTop: 20,
-                  backgroundColor: '#6366f1',
-                  paddingHorizontal: 24,
-                  paddingVertical: 12,
-                  borderRadius: 12,
-          borderWidth: 1,
-          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
-                }}
-              >
-                <Text style={{ color: '#ffffff', fontWeight: '600', fontSize: 12 }}>
-                  Create Habit
-                </Text>
-              </TouchableOpacity>
             </View>
           ) : (
             <View style={{ gap: 12 }}>
@@ -201,8 +212,8 @@ export default function HabitsScreen() {
                             marginTop: 8,
                             gap: 4,
                           }}>
-                            <Ionicons name="flame" size={16} color="#f97316" />
-                            <Text style={{ fontSize: 10, color: '#f97316', fontWeight: '600' }}>
+                            <Ionicons name="flame" size={16} color="#6366f1" />
+                            <Text style={{ fontSize: 10, color: '#6366f1', fontWeight: '600' }}>
                               {habit.currentStreak} day streak
                             </Text>
                           </View>
@@ -218,7 +229,7 @@ export default function HabitsScreen() {
                           borderRadius: 28,
           borderWidth: 1,
           borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
-                          backgroundColor: isCompleted ? '#10b981' : mutedColor + '20',
+                          backgroundColor: isCompleted ? '#6366f1' : mutedColor + '20',
                           justifyContent: 'center',
                           alignItems: 'center',
                         }}
@@ -245,7 +256,7 @@ export default function HabitsScreen() {
                           style={{
                             width: `${progressPercent}%`,
                             height: '100%',
-                            backgroundColor: isCompleted ? '#10b981' : '#6366f1',
+                            backgroundColor: isCompleted ? '#6366f1' : '#6366f1',
                           }}
                         />
                       </View>
@@ -282,7 +293,7 @@ export default function HabitsScreen() {
                           borderRadius: 8,
           borderWidth: 1,
           borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
-                          backgroundColor: index < 3 ? '#10b981' : mutedColor + '20',
+                          backgroundColor: index < 3 ? '#6366f1' : mutedColor + '20',
                         }}
                       />
                     </View>

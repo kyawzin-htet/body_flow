@@ -171,6 +171,7 @@ export interface HydrationSettings {
   userId: number;
   dailyGoalMl: number;
   notificationEnabled: boolean;
+  notificationSoundEnabled: boolean;
   notificationIntervalMinutes: number;
   notificationStartHour: number;
   notificationEndHour: number;

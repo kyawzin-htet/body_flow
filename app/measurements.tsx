@@ -3,7 +3,8 @@ import { Stack } from 'expo-router';
 import { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 // @ts-ignore
-import { VictoryChart, VictoryLine, VictoryScatter, VictoryTheme, VictoryAxis } from 'victory-native';
+import { CartesianChart, Line, Scatter } from 'victory-native';
+import { matchFont } from "@shopify/react-native-skia";
 import { useUserStore } from '../src/store/userStore';
 import { useMeasurementStore } from '../src/store/measurementStore';
 import { useTheme } from '../src/hooks/useTheme';
@@ -22,6 +23,13 @@ export default function MeasurementsScreen() {
     chest: '',
     arms: '',
     legs: '',
+  });
+
+  const font = matchFont({
+    fontFamily: "System",
+    fontSize: 10,
+    fontStyle: "normal",
+    fontWeight: "normal",
   });
 
   useEffect(() => {
@@ -55,9 +63,10 @@ export default function MeasurementsScreen() {
   const chartColor = '#6366f1';
 
   // Prepare chart data (reverse to show oldest to newest)
+  // Convert date to timestamp for the x-axis numerical scale
   const weightData = [...history].reverse()
     .filter(m => m.weight)
-    .map(m => ({ x: new Date(m.date), y: m.weight }));
+    .map(m => ({ x: new Date(m.date).getTime(), y: m.weight }));
 
   return (
     <View style={{ flex: 1, backgroundColor: bgColor }}>
@@ -97,45 +106,41 @@ export default function MeasurementsScreen() {
             <Text style={{ fontSize: 16, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>
               Weight Progress
             </Text>
-            <View style={{ backgroundColor: surfaceColor, borderRadius: 16, padding: 16 }}>
+            <View style={{ backgroundColor: surfaceColor, borderRadius: 16, padding: 16, height: 280 }}>
               {weightData.length > 1 ? (
-                <VictoryChart
-                  theme={VictoryTheme.material}
-                  height={250}
-                  padding={{ top: 20, bottom: 40, left: 50, right: 20 }}
+                <CartesianChart
+                  data={weightData}
+                  xKey="x"
+                  yKeys={["y"]}
+                  axisOptions={{
+                    font,
+                    tickCount: 5,
+                    lineColor: mutedColor,
+                    labelColor: mutedColor,
+                    formatXLabel: (value) => {
+                       const d = new Date(value);
+                       return `${d.getMonth() + 1}/${d.getDate()}`;
+                    },
+                  }}
                 >
-                  <VictoryAxis 
-                    fixLabelOverlap
-                    style={{
-                      axis: { stroke: mutedColor },
-                      tickLabels: { fill: mutedColor, fontSize: 10 },
-                      grid: { stroke: 'none' }
-                    }}
-                  />
-                  <VictoryAxis 
-                    dependentAxis
-                    style={{
-                      axis: { stroke: mutedColor },
-                      tickLabels: { fill: mutedColor, fontSize: 10 },
-                      grid: { stroke: mutedColor + '20' }
-                    }}
-                  />
-                  <VictoryLine
-                    data={weightData}
-                    style={{
-                      data: { stroke: chartColor, strokeWidth: 3 }
-                    }}
-                    animate={{
-                      duration: 2000,
-                      onLoad: { duration: 1000 }
-                    }}
-                  />
-                  <VictoryScatter
-                    data={weightData}
-                    size={5}
-                    style={{ data: { fill: chartColor } }}
-                  />
-                </VictoryChart>
+                  {({ points }) => (
+                    <>
+                      <Line
+                        points={points.y}
+                        color={chartColor}
+                        strokeWidth={3}
+                        animate={{ type: "timing", duration: 1000 }}
+                      />
+                      <Scatter
+                        points={points.y}
+                        shape="circle"
+                        radius={6}
+                        color={chartColor}
+                        style="fill"
+                      />
+                    </>
+                  )}
+                </CartesianChart>
               ) : (
                 <View style={{ padding: 40, alignItems: 'center' }}>
                   <Text style={{ color: mutedColor }}>Not enough data for chart</Text>
@@ -143,6 +148,7 @@ export default function MeasurementsScreen() {
               )}
             </View>
           </View>
+
 
           {/* History List */}
           <Text style={{ fontSize: 16, fontWeight: 'bold', color: textColor, marginBottom: 12 }}>

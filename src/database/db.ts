@@ -183,6 +183,7 @@ const createTables = async () => {
       user_id INTEGER UNIQUE,
       daily_goal_ml INTEGER DEFAULT 2000,
       notification_enabled INTEGER DEFAULT 1,
+      notification_sound_enabled INTEGER DEFAULT 1,
       notification_interval_minutes INTEGER DEFAULT 60,
       notification_start_hour INTEGER DEFAULT 8,
       notification_end_hour INTEGER DEFAULT 22,
@@ -246,6 +247,7 @@ const runMigrations = async () => {
         user_id INTEGER UNIQUE,
         daily_goal_ml INTEGER DEFAULT 2000,
         notification_enabled INTEGER DEFAULT 1,
+        notification_sound_enabled INTEGER DEFAULT 1,
         notification_interval_minutes INTEGER DEFAULT 60,
         notification_start_hour INTEGER DEFAULT 8,
         notification_end_hour INTEGER DEFAULT 22,
@@ -256,6 +258,19 @@ const runMigrations = async () => {
       );
     `);
     console.log('✅ Migration completed: hydration_settings table created');
+  }
+
+  // Add notification_sound_enabled column if it doesn't exist
+  const columnCheck = await db.getFirstAsync<{ name: string }>(
+    `SELECT name FROM pragma_table_info('hydration_settings') WHERE name='notification_sound_enabled'`
+  );
+
+  if (!columnCheck) {
+    console.log('🔄 Running migration: Adding notification_sound_enabled column');
+    await db.execAsync(`
+      ALTER TABLE hydration_settings ADD COLUMN notification_sound_enabled INTEGER DEFAULT 1;
+    `);
+    console.log('✅ Migration completed: notification_sound_enabled column added');
   }
 };
 

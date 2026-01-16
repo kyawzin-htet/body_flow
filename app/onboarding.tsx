@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -65,6 +65,10 @@ export default function OnboardingScreen() {
       title: '📅 Training Frequency',
       description: 'How many days per week will you train?',
     },
+    {
+      title: '👤 What should we call you?',
+      description: 'Enter your username to personalize your experience',
+    },
   ];
 
   const toggleGoal = (goal: Goal) => {
@@ -84,7 +88,9 @@ export default function OnboardingScreen() {
   const canProceed = step === 0 || 
     (step === 1 && selectedGoals.length > 0) ||
     (step === 2 && selectedMuscles.length > 0) ||
-    step >= 3;
+    (step === 3) ||
+    (step === 4) ||
+    (step === 5 && name.trim().length > 0);
 
   return (
     <View style={{ flex: 1, backgroundColor: bgColor }}>
@@ -259,6 +265,46 @@ export default function OnboardingScreen() {
                   )}
                 </TouchableOpacity>
               ))}
+            </View>
+          )}
+
+          {/* Step 5: Username */}
+          {step === 5 && (
+            <View style={{ gap: 20 }}>
+              <View style={{
+                backgroundColor: surfaceColor,
+                borderRadius: 16,
+                padding: 4,
+                borderWidth: 2,
+                borderColor: name.trim().length > 0 ? '#6366f1' : 'transparent',
+              }}>
+                <TextInput
+                  value={name}
+                  onChangeText={setName}
+                  placeholder="Enter your username"
+                  placeholderTextColor={mutedColor}
+                  style={{
+                    fontSize: 16,
+                    color: textColor,
+                    padding: 16,
+                    fontWeight: '600',
+                  }}
+                  autoFocus
+                  autoCapitalize="words"
+                />
+              </View>
+              
+              <View style={{
+                backgroundColor: isDark ? '#1e293b' : '#f1f5f9',
+                padding: 16,
+                borderRadius: 12,
+                borderLeftWidth: 4,
+                borderLeftColor: '#6366f1',
+              }}>
+                <Text style={{ fontSize: 12, color: mutedColor, lineHeight: 20 }}>
+                  💡 This username will be used to personalize your BodyFlow experience throughout the app.
+                </Text>
+              </View>
             </View>
           )}
         </View>

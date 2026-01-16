@@ -46,15 +46,20 @@ export class NotificationService {
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
 
+    console.log('📱 Current notification permission status:', existingStatus);
+
     if (existingStatus !== 'granted') {
       const { status } = await Notifications.requestPermissionsAsync();
       finalStatus = status;
+      console.log('📱 Permission request result:', status);
     }
 
     if (finalStatus !== 'granted') {
-      console.log('Notification permissions not granted');
+      console.log('❌ Notification permissions not granted');
       return false;
     }
+
+    console.log('✅ Notification permissions granted');
 
     // Configure notification channel for Android
     if (Platform.OS === 'android') {
@@ -65,6 +70,7 @@ export class NotificationService {
         lightColor: '#4A90E2',
         sound: 'default',
       });
+      console.log('📱 Android notification channel configured');
     }
 
     return true;
@@ -83,14 +89,15 @@ export class NotificationService {
   static async scheduleHydrationNotifications(
     intervalMinutes: number,
     startHour: number,
-    endHour: number
+    endHour: number,
+    soundEnabled: boolean = true
   ): Promise<void> {
     // Cancel existing notifications first
     await this.cancelHydrationNotifications();
 
     const hasPermission = await this.requestPermissions();
     if (!hasPermission) {
-      console.log('Cannot schedule notifications without permission');
+      console.log('❌ Cannot schedule notifications without permission');
       return;
     }
 
@@ -98,7 +105,10 @@ export class NotificationService {
     const activeHours = endHour - startHour;
     const notificationsPerDay = Math.floor((activeHours * 60) / intervalMinutes);
 
-    console.log(`Scheduling ${notificationsPerDay} notifications per day`);
+    console.log(`🔔 Scheduling hydration notifications:`);
+    console.log(`   - Interval: ${intervalMinutes} minutes`);
+    console.log(`   - Active hours: ${startHour}:00 - ${endHour}:00`);
+    console.log(`   - Notifications per day: ${notificationsPerDay}`);
 
     // Schedule notifications for the next 7 days
     const notifications: string[] = [];
@@ -132,26 +142,38 @@ export class NotificationService {
             minute: '2-digit',
             hour12: false
           });
-          console.log(`Scheduling notification for: ${formattedDate} (in ${secondsUntilTrigger}s)`);
           
-          const id = await Notifications.scheduleNotificationAsync({
-            content: {
-              title: '💧 Hydration Reminder',
-              body: this.getRandomMessage(),
-              data: { type: 'hydration' },
-              sound: 'default',
-            },
-            trigger: { 
-              type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
-              seconds: secondsUntilTrigger 
-            },
-          });
-          notifications.push(id);
+          if (notifications.length < 3) {
+            // Only log first 3 to avoid console spam
+            console.log(`   📅 Scheduling for: ${formattedDate} (in ${Math.floor(secondsUntilTrigger / 60)} min)`);
+          }
+          
+          try {
+            const id = await Notifications.scheduleNotificationAsync({
+              content: {
+                title: '💧 Hydration Reminder',
+                body: this.getRandomMessage(),
+                data: { type: 'hydration' },
+                sound: soundEnabled ? 'default' : undefined,
+              },
+              trigger: {
+                type: Notifications.SchedulableTriggerInputTypes.DATE,
+                date: triggerDate,
+                channelId: Platform.OS === 'android' ? 'hydration' : undefined,
+              },
+            });
+            notifications.push(id);
+          } catch (error) {
+            console.error('❌ Error scheduling notification:', error);
+          }
         }
       }
     }
 
-    console.log(`Scheduled ${notifications.length} hydration notifications`);
+    console.log(`✅ Scheduled ${notifications.length} hydration notifications for the next 7 days`);
+    
+    // Verify scheduled notifications
+    await this.logScheduledNotifications();
   }
 
   /**
@@ -167,28 +189,30 @@ export class NotificationService {
       await Notifications.cancelScheduledNotificationAsync(notification.identifier);
     }
 
-    console.log(`Cancelled ${hydrationNotifications.length} hydration notifications`);
+    console.log(`🔕 Cancelled ${hydrationNotifications.length} hydration notifications`);
   }
 
   /**
    * Send immediate notification (for testing)
    */
-  static async sendImmediateNotification(): Promise<void> {
+  static async sendImmediateNotification(soundEnabled: boolean = true): Promise<void> {
     const hasPermission = await this.requestPermissions();
     if (!hasPermission) {
-      console.log('Cannot send notification without permission');
+      console.log('❌ Cannot send notification without permission');
       return;
     }
 
+    console.log('📬 Sending immediate test notification...');
     await Notifications.scheduleNotificationAsync({
       content: {
         title: '💧 Hydration Reminder',
         body: this.getRandomMessage(),
         data: { type: 'hydration' },
-        sound: 'default',
+        sound: soundEnabled ? 'default' : undefined,
       },
       trigger: null, // Send immediately
     });
+    console.log('✅ Immediate notification sent');
   }
 
   /**
@@ -207,5 +231,36 @@ export class NotificationService {
     callback: (response: Notifications.NotificationResponse) => void
   ) {
     return Notifications.addNotificationResponseReceivedListener(callback);
+  }
+
+  /**
+   * Log all scheduled notifications (for debugging)
+   */
+  static async logScheduledNotifications(): Promise<void> {
+    const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+    const hydrationNotifications = scheduled.filter(
+      (n) => n.content.data?.type === 'hydration'
+    );
+
+    console.log(`📋 Currently scheduled hydration notifications: ${hydrationNotifications.length}`);
+    
+    if (hydrationNotifications.length > 0) {
+      console.log('   First 3 upcoming notifications:');
+      hydrationNotifications.slice(0, 3).forEach((notification, index) => {
+        const trigger = notification.trigger as any;
+        if (trigger.type === 'date' && trigger.value) {
+          const triggerDate = new Date(trigger.value);
+          const formattedDate = triggerDate.toLocaleString('en-US', {
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+          });
+          const minutesUntil = Math.floor((triggerDate.getTime() - Date.now()) / 60000);
+          console.log(`   ${index + 1}. ${formattedDate} (in ${minutesUntil} min)`);
+        }
+      });
+    }
   }
 }

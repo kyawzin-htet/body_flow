@@ -91,7 +91,8 @@ export const useHydrationStore = create<HydrationState>((set, get) => ({
           await NotificationService.scheduleHydrationNotifications(
             updated.notificationIntervalMinutes,
             updated.notificationStartHour,
-            updated.notificationEndHour
+            updated.notificationEndHour,
+            updated.notificationSoundEnabled
           );
         } else {
           await NotificationService.cancelHydrationNotifications();
@@ -120,7 +121,8 @@ export const useHydrationStore = create<HydrationState>((set, get) => ({
         await NotificationService.scheduleHydrationNotifications(
           settings.notificationIntervalMinutes,
           settings.notificationStartHour,
-          settings.notificationEndHour
+          settings.notificationEndHour,
+          settings.notificationSoundEnabled
         );
       }
     } catch (error) {

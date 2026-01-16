@@ -13,6 +13,7 @@ export class HydrationSettingsRepository {
         user_id as userId,
         daily_goal_ml as dailyGoalMl,
         notification_enabled as notificationEnabled,
+        notification_sound_enabled as notificationSoundEnabled,
         notification_interval_minutes as notificationIntervalMinutes,
         notification_start_hour as notificationStartHour,
         notification_end_hour as notificationEndHour,
@@ -31,6 +32,7 @@ export class HydrationSettingsRepository {
     return {
       ...result,
       notificationEnabled: Boolean(result.notificationEnabled),
+      notificationSoundEnabled: Boolean(result.notificationSoundEnabled),
     };
   }
 
@@ -71,6 +73,10 @@ export class HydrationSettingsRepository {
     if (settings.notificationEnabled !== undefined) {
       updates.push('notification_enabled = ?');
       values.push(settings.notificationEnabled ? 1 : 0);
+    }
+    if (settings.notificationSoundEnabled !== undefined) {
+      updates.push('notification_sound_enabled = ?');
+      values.push(settings.notificationSoundEnabled ? 1 : 0);
     }
     if (settings.notificationIntervalMinutes !== undefined) {
       updates.push('notification_interval_minutes = ?');

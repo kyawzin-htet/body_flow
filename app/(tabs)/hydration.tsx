@@ -36,10 +36,12 @@ export default function HydrationScreen() {
   const [showCongratulations, setShowCongratulations] = useState(false);
   const hasShownCongratsToday = useRef(false);
   const previousAmount = useRef(0);
+  const isInitialLoad = useRef(true);
   
   // Settings form state
   const [dailyGoal, setDailyGoal] = useState(2000);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [notificationSoundEnabled, setNotificationSoundEnabled] = useState(true);
   const [intervalMinutes, setIntervalMinutes] = useState(60);
   const [startHour, setStartHour] = useState(8);
   const [endHour, setEndHour] = useState(22);
@@ -54,6 +56,7 @@ export default function HydrationScreen() {
     if (settings) {
       setDailyGoal(settings.dailyGoalMl);
       setNotificationsEnabled(settings.notificationEnabled);
+      setNotificationSoundEnabled(settings.notificationSoundEnabled);
       setIntervalMinutes(settings.notificationIntervalMinutes);
       setStartHour(settings.notificationStartHour);
       setEndHour(settings.notificationEndHour);
@@ -63,6 +66,20 @@ export default function HydrationScreen() {
   // Check if goal is reached and show congratulations
   useEffect(() => {
     if (!todayLog) return;
+    
+    // Prevent showing congratulations on initial load if goal is already reached
+    if (isInitialLoad.current) {
+      isInitialLoad.current = false;
+      previousAmount.current = todayLog.amountMl;
+      // If goal is already reached on load, mark it as shown so it doesn't pop up later unexpectedly
+      // unless we want it to show ONLY if they cross it again after reset? 
+      // Current requirement: "show one time... if data reset... act like previous"
+      // So if loaded > goal, we assume it was shown or shouldn't show now.
+      if (todayLog.amountMl >= todayLog.goalMl) {
+        hasShownCongratsToday.current = true;
+      }
+      return;
+    }
     
     const goalReached = isGoalReached();
     const wasNotReached = previousAmount.current < todayLog.goalMl;
@@ -104,19 +121,30 @@ export default function HydrationScreen() {
 
   const handleSaveSettings = async () => {
     if (!user) return;
-    await updateSettings(user.id, {
-      dailyGoalMl: dailyGoal,
-      notificationEnabled: notificationsEnabled,
-      notificationIntervalMinutes: intervalMinutes,
-      notificationStartHour: startHour,
-      notificationEndHour: endHour,
-    });
-    setShowSettings(false);
+    try {
+      await updateSettings(user.id, {
+        dailyGoalMl: dailyGoal,
+        notificationEnabled: notificationsEnabled,
+        notificationSoundEnabled: notificationSoundEnabled,
+        notificationIntervalMinutes: intervalMinutes,
+        notificationStartHour: startHour,
+        notificationEndHour: endHour,
+      });
+      // Only close the modal after successful save
+      setShowSettings(false);
+    } catch (error) {
+      Alert.alert('Error', 'Failed to save settings. Please try again.');
+    }
   };
 
   const handleTestNotification = async () => {
-    await NotificationService.sendImmediateNotification();
+    await NotificationService.sendImmediateNotification(notificationSoundEnabled);
     Alert.alert('Test Notification', 'Check your notifications!');
+  };
+
+  const handleCheckScheduled = async () => {
+    await NotificationService.logScheduledNotifications();
+    Alert.alert('Scheduled Notifications', 'Check console logs for details!');
   };
 
   const bgColor = isDark ? '#000000' : '#f8f9fa';
@@ -388,6 +416,34 @@ export default function HydrationScreen() {
                 </TouchableOpacity>
               </View>
 
+              {/* Notification Sound Toggle */}
+              {notificationsEnabled && (
+                <View style={{ marginBottom: 24 }}>
+                  <TouchableOpacity
+                    onPress={() => setNotificationSoundEnabled(!notificationSoundEnabled)}
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      padding: 16,
+                      backgroundColor: isDark ? 'rgba(0,0,0,0.3)' : 'rgba(245,245,245,0.7)',
+                      borderRadius: 12,
+                      borderWidth: 1,
+                      borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)",
+                    }}
+                  >
+                    <Text style={{ color: textColor, fontSize: 12, fontWeight: '600' }}>
+                      Notification Sound
+                    </Text>
+                    <Ionicons
+                      name={notificationSoundEnabled ? 'volume-high' : 'volume-mute'}
+                      size={24}
+                      color={notificationSoundEnabled ? accentColor : mutedColor}
+                    />
+                  </TouchableOpacity>
+                </View>
+              )}
+
               {/* Notification Interval */}
               {notificationsEnabled && (
                 <>
@@ -475,11 +531,29 @@ export default function HydrationScreen() {
                       borderWidth: 1,
                       borderColor: accentColor,
                       alignItems: 'center',
-                      marginBottom: 24,
+                      marginBottom: 12,
                     }}
                   >
                     <Text style={{ color: accentColor, fontWeight: '600' }}>
                       Test Notification
+                    </Text>
+                  </TouchableOpacity>
+
+                  {/* Check Scheduled Notifications */}
+                  <TouchableOpacity
+                    onPress={handleCheckScheduled}
+                    style={{
+                      padding: 16,
+                      borderRadius: 12,
+                      backgroundColor: isDark ? 'rgba(0,0,0,0.3)' : 'rgba(245,245,245,0.7)',
+                      borderWidth: 1,
+                      borderColor: mutedColor,
+                      alignItems: 'center',
+                      marginBottom: 24,
+                    }}
+                  >
+                    <Text style={{ color: mutedColor, fontWeight: '600' }}>
+                      Check Scheduled (Debug)
                     </Text>
                   </TouchableOpacity>
                 </>
@@ -488,16 +562,23 @@ export default function HydrationScreen() {
               {/* Save Button */}
               <TouchableOpacity
                 onPress={handleSaveSettings}
+                disabled={isLoading}
                 style={{
-                  backgroundColor: accentColor,
+                  backgroundColor: isLoading ? mutedColor : accentColor,
                   padding: 16,
                   borderRadius: 16,
           borderWidth: 1,
           borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.18)",
                   alignItems: 'center',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  gap: 8,
                 }}
               >
-                <Text style={{ color: '#ffffff', fontSize: 14, fontWeight: 'bold' }}>Save Settings</Text>
+                {isLoading && <ActivityIndicator size="small" color="#ffffff" />}
+                <Text style={{ color: '#ffffff', fontSize: 14, fontWeight: 'bold' }}>
+                  {isLoading ? 'Saving...' : 'Save Settings'}
+                </Text>
               </TouchableOpacity>
             </ScrollView>
           </View>

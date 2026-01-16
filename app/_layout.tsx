@@ -1,5 +1,6 @@
 import 'react-native-reanimated';
 import { useEffect, useState } from 'react';
+import { Splash } from '../src/components/Splash';
 import '../global.css';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -9,6 +10,7 @@ import { useUserStore } from '../src/store/userStore';
 import { useSettingsStore } from '../src/store/settingsStore';
 import { useTheme } from '../src/hooks/useTheme';
 import { useColorScheme } from 'nativewind';
+import { NotificationService } from '../src/services/notificationService';
 
 export default function RootLayout() {
   const colorScheme = useTheme();
@@ -19,7 +21,8 @@ export default function RootLayout() {
   const loadSettings = useSettingsStore((state) => state.loadSettings);
   const theme = useSettingsStore((state) => state.theme);
   const { setColorScheme } = useColorScheme();
-  const [isReady, setIsReady] = useState(false);
+  const [isAppReady, setIsAppReady] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
 
   // Sync theme with NativeWind
   useEffect(() => {
@@ -33,10 +36,30 @@ export default function RootLayout() {
         await initDatabase();
         await loadSettings();
         await loadUser();
-        setIsReady(true);
+        
+        // Request notification permissions early
+        const hasPermission = await NotificationService.requestPermissions();
+        if (hasPermission) {
+          console.log('✅ Notification permissions granted');
+        } else {
+          console.log('❌ Notification permissions denied');
+        }
+        
+        // Artificial delay for splash screen for returning users
+        const currentUser = useUserStore.getState().user;
+        if (currentUser) {
+          setTimeout(() => {
+            setIsAppReady(true);
+            setShowSplash(false);
+          }, 2000); // 2 seconds splash for returning users
+        } else {
+          setIsAppReady(true);
+          setShowSplash(false);
+        }
       } catch (error) {
         console.error('Error initializing app:', error);
-        setIsReady(true);
+        setIsAppReady(true);
+        setShowSplash(false);
       }
     };
 
@@ -44,7 +67,7 @@ export default function RootLayout() {
   }, [loadUser, loadSettings]);
 
   useEffect(() => {
-    if (!isReady) return;
+    if (!isAppReady) return;
 
     const inOnboarding = segments[0] === 'onboarding';
 
@@ -55,10 +78,10 @@ export default function RootLayout() {
       // User exists but on onboarding, redirect to home
       router.replace('/(tabs)');
     }
-  }, [user, segments, isReady]);
+  }, [user, segments, isAppReady]);
 
-  if (!isReady) {
-    return null; // or a splash screen
+  if (!isAppReady || showSplash) {
+    return <Splash />;
   }
 
   return (
