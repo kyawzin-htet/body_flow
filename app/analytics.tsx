@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, useColorScheme, ActivityIndicator } from 'react-native';
 import { useState, useEffect } from 'react';
+import { Stack } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useUserStore } from '../src/store/userStore';
 import { AnalyticsService } from '../src/services/analyticsService';
@@ -90,7 +91,17 @@ export default function AnalyticsScreen() {
   };
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: bgColor }}>
+    <View style={{ flex: 1, backgroundColor: bgColor }}>
+      <Stack.Screen 
+        options={{
+          headerTitle: 'Analytics',
+          headerStyle: { backgroundColor: surfaceColor },
+          headerTintColor: textColor,
+          headerShadowVisible: false,
+        }}
+      />
+      
+      <ScrollView style={{ flex: 1, backgroundColor: bgColor }}>
       <View style={{ padding: 20 }}>
         {/* <Text style={{ fontSize: 20, fontWeight: 'bold', color: textColor, marginBottom: 8 }}>
           Analytics
@@ -417,5 +428,6 @@ export default function AnalyticsScreen() {
         </View>
       </View>
     </ScrollView>
+    </View>
   );
 }

@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../src/hooks/useTheme';
 import { useSettingsStore } from '../src/store/settingsStore';
 import { Audio } from 'expo-av';
+import * as Haptics from 'expo-haptics';
 
 type TimerPhase = 'prepare' | 'work' | 'rest' | 'cooldown' | 'finished';
 
@@ -12,6 +13,7 @@ export default function TimerScreen() {
   const colorScheme = useTheme();
   const isDark = colorScheme === 'dark';
   const soundEnabled = useSettingsStore((state) => state.soundEnabled);
+  const toggleSound = useSettingsStore((state) => state.toggleSound);
 
   // Config
   const [prepareTime, setPrepareTime] = useState(10);
@@ -28,26 +30,76 @@ export default function TimerScreen() {
   const [currentRound, setCurrentRound] = useState(1);
   const [currentCycle, setCurrentCycle] = useState(1);
 
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const soundRef = useRef<Audio.Sound | null>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const beepSoundRef = useRef<Audio.Sound | null>(null);
+  const finishSoundRef = useRef<Audio.Sound | null>(null);
 
-  // Cleanup
+  // Load sounds on mount
   useEffect(() => {
+    loadSounds();
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
+      beepSoundRef.current?.unloadAsync();
+      finishSoundRef.current?.unloadAsync();
     };
   }, []);
 
-  const playSound = async (type: 'beep' | 'finished') => {
+  const loadSounds = async () => {
+    try {
+      // Configure audio mode
+      await Audio.setAudioModeAsync({
+        playsInSilentModeIOS: true,
+        staysActiveInBackground: false,
+      });
+
+      // Load beep sound
+      const { sound: beepSound } = await Audio.Sound.createAsync(
+        { uri: 'https://www.soundjay.com/buttons/sounds/beep-07a.mp3' },
+        { shouldPlay: false }
+      );
+      beepSoundRef.current = beepSound;
+
+      // Load finish sound
+      const { sound: finishSound } = await Audio.Sound.createAsync(
+        { uri: 'https://www.soundjay.com/buttons/sounds/beep-09.mp3' },
+        { shouldPlay: false }
+      );
+      finishSoundRef.current = finishSound;
+    } catch (error) {
+      console.error('Error loading sounds:', error);
+    }
+  };
+
+  const playSound = async (type: 'beep' | 'start' | 'stop' | 'finished') => {
     if (!soundEnabled) return;
-    // In a real app, we would load and play actual sound files here.
-    // For this MVP, we'll just placeholder logic or console log.
-    // implementation of `Audio.Sound.createAsync` would go here.
+    
+    try {
+      // Play haptic feedback
+      if (type === 'finished') {
+        await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      } else if (type === 'start') {
+        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      } else if (type === 'stop') {
+        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+      } else {
+        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      }
+
+      // Play audio sound
+      if (type === 'finished' && finishSoundRef.current) {
+        await finishSoundRef.current.replayAsync();
+      } else if (beepSoundRef.current) {
+        await beepSoundRef.current.replayAsync();
+      }
+    } catch (error) {
+      console.log('Playing sound:', type);
+    }
   };
 
   const startTimer = () => {
     setIsRunning(true);
     setIsPaused(false);
+    playSound('start');
     
     // Initial setup if starting from fresh
     if (phase === 'finished' || (phase === 'prepare' && timeLeft === prepareTime)) {
@@ -67,6 +119,7 @@ export default function TimerScreen() {
     setPhase('prepare');
     setTimeLeft(prepareTime);
     setCurrentRound(1);
+    playSound('stop');
     if (timerRef.current) clearInterval(timerRef.current);
   };
 
@@ -156,6 +209,23 @@ export default function TimerScreen() {
           headerStyle: { backgroundColor: surfaceColor },
           headerTintColor: textColor,
           headerShadowVisible: false,
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={toggleSound}
+              style={{
+                marginRight: 8,
+                padding: 8,
+                borderRadius: 8,
+                // backgroundColor: soundEnabled ? '#6366f1' + '20' : mutedColor + '20',
+              }}
+            >
+              <Ionicons 
+                name={soundEnabled ? 'volume-high' : 'volume-mute'} 
+                size={24} 
+                color={soundEnabled ? '#6366f1' : mutedColor} 
+              />
+            </TouchableOpacity>
+          ),
         }}
       />
 
